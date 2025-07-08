@@ -1,11 +1,11 @@
 export default function About() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">About Me</h1>
+      <h1 className="text-4xl font-bold text-gray-900 mb-8">About Eric Riedel</h1>
       
       <div className="prose prose-lg max-w-none">
         <p className="text-gray-600 mb-6">
-          Welcome to my portfolio! I&apos;m passionate about creating unique and engaging gaming experiences 
+          I am a software product manager and game designer from Seattle, Washington. I&apos;m passionate about creating unique and engaging gaming experiences 
           that challenge conventional thinking and bring people together through interactive design.
         </p>
         

@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Game Design Portfolio",
-  description: "A portfolio showcasing creative gaming experiences and design projects",
+  title: "Eric Riedel - Portfolio",
+  description: "Eric Riedel's portfolio showcasing creative gaming experiences and design projects",
 };
 
 export default function RootLayout({

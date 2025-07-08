@@ -20,16 +20,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --primary: #3b82f6;
-    --primary-hover: #2563eb;
-    --accent: #1e293b;
-    --border: #334155;
-  }
-}
+/* Force light theme - dark theme removed per issue #1 */
 
 body {
   background: var(--background);

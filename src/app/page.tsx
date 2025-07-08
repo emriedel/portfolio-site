@@ -6,8 +6,11 @@ export default function Home() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <section className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Game Design Portfolio
+          Eric Riedel
         </h1>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-4">
+          I am a software product manager and game designer from Seattle, Washington
+        </p>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Welcome to my portfolio of creative gaming experiences, interactive designs, and innovative projects.
         </p>

@@ -6,7 +6,7 @@ export default function Navigation() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="text-xl font-bold text-gray-900">
-            Portfolio
+            Eric Riedel
           </Link>
           <div className="flex space-x-8">
             <Link href="/" className="text-gray-600 hover:text-gray-900 transition-colors">

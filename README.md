@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Game Design Portfolio
+
+A minimalist portfolio website showcasing creative gaming experiences and interactive design projects. Built with Next.js, TypeScript, and Tailwind CSS.
+
+## Features
+
+- **Responsive Design**: Optimized for all devices
+- **Project Gallery**: Clean grid layout showcasing gaming experiences
+- **Individual Project Pages**: Detailed views with images and descriptions
+- **Minimalist Styling**: Clean, professional design with subtle animations
+- **SEO Optimized**: Proper meta tags and semantic HTML
+- **TypeScript**: Full type safety throughout the codebase
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ 
+- npm, yarn, or pnpm
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/                    # Next.js app router pages
+│   ├── about/             # About page
+│   ├── projects/[slug]/   # Dynamic project pages
+│   └── ...
+├── components/            # React components
+│   ├── Navigation.tsx
+│   ├── Footer.tsx
+│   └── ProjectGrid.tsx
+├── data/                  # Static data files
+│   └── projects.ts        # Project data
+└── types/                 # TypeScript type definitions
+    └── project.ts
+```
 
-## Learn More
+## Customization
 
-To learn more about Next.js, take a look at the following resources:
+### Adding New Projects
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Add your project data to `src/data/projects.ts`
+2. Include project images in the `public/images/` directory
+3. The site will automatically generate individual project pages
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Styling
 
-## Deploy on Vercel
+- Global styles are in `src/app/globals.css`
+- Uses Tailwind CSS for utility-first styling
+- Custom CSS variables for theme colors and dark mode support
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com) and sign in
+3. Click "New Project" and import your GitHub repository
+4. Vercel will automatically detect Next.js and deploy your site
+5. Your site will be live with a custom URL
+
+### Alternative Deployment Options
+
+- **Netlify**: Connect your GitHub repo and deploy
+- **GitHub Pages**: Use `next export` for static hosting
+- **Cloudflare Pages**: Direct integration with Git repositories
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Font**: Geist (Google Fonts)
+- **Deployment**: Vercel (recommended)
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).

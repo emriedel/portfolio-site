@@ -17,6 +17,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Eric Riedel - Portfolio",
   description: "Eric Riedel's portfolio showcasing creative gaming experiences and design projects",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", type: "image/x-icon" }
+    ]
+  }
 };
 
 export default function RootLayout({

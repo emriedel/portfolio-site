@@ -11,7 +11,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {projects.map((project) => (
         <Link 
-          key={project.id}
+          key={project.slug}
           href={`/projects/${project.slug}`}
           className="group block"
         >

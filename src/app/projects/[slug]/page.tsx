@@ -1,6 +1,7 @@
 import { projects } from '@/data/projects';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ProjectPageProps {
   params: Promise<{
@@ -64,8 +65,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">Images</h2>
           <div className="grid gap-4 md:grid-cols-2">
             {project.images.map((image, index) => (
-              <div key={index} className="bg-gray-200 rounded-lg aspect-video flex items-center justify-center">
-                <span className="text-gray-500">Image {index + 1}</span>
+              <div key={index} className="relative bg-gray-200 rounded-lg aspect-video overflow-hidden">
+                <Image
+                  src={image}
+                  alt={`${project.title} - Image ${index + 1}`}
+                  fill
+                  className="object-cover"
+                />
               </div>
             ))}
           </div>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Project } from '@/types/project';
 
 interface ProjectGridProps {
@@ -15,8 +16,19 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
           className="group block"
         >
           <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow group-hover:shadow-lg card-hover">
-            <div className="bg-gray-200 rounded-lg h-48 mb-4 flex items-center justify-center">
-              <span className="text-gray-500">Project Image</span>
+            <div className="relative bg-gray-200 rounded-lg h-48 mb-4 overflow-hidden">
+              {project.images && project.images.length > 0 ? (
+                <Image
+                  src={project.images[0]}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <span className="text-gray-500">Project Image</span>
+                </div>
+              )}
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
               {project.title}

@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="bg-gray-50 border-t border-gray-200">
       <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="text-center text-gray-600 text-sm">
-          © 2024 Eric Riedel. Built with Next.js.
+          © 2025 Eric Riedel. Built with Next.js.
         </div>
       </div>
     </footer>

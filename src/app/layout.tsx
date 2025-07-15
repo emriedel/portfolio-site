@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Eric Riedel - Portfolio",
-  description: "Eric Riedel's portfolio showcasing creative gaming experiences and design projects",
+  description: "Eric Riedel's portfolio showcasing gaming design projects",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

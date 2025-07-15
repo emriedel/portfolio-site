@@ -6,18 +6,17 @@ export default function Home() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <section className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Eric Riedel
+          Hi, I&apos;m Eric
         </h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-4">
-          I am a software product manager and game designer from Seattle, Washington
+          I&apos;m a software product manager and game designer from Seattle, Washington
         </p>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Welcome to my portfolio of creative gaming experiences, interactive designs, and innovative projects.
+          I like to design &quot;games&quot; that have some sort of real-world, interactive experience involved. Here are some of my favorites from over the years.
         </p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Projects</h2>
         <ProjectGrid projects={projects} />
       </section>
     </div>

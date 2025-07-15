@@ -79,5 +79,18 @@ a {
 }
 
 .prose li {
-  margin: 0.5rem 0 !important;
+  margin: 0.25rem 0 !important;
+}
+
+/* Increased paragraph spacing */
+.prose p {
+  margin: 1rem 0 !important;
+}
+
+.prose p:first-child {
+  margin-top: 0 !important;
+}
+
+.prose p:last-child {
+  margin-bottom: 0 !important;
 }

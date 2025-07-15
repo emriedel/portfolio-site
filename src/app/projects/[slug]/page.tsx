@@ -53,6 +53,20 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </section>
         )}
 
+        {project.youtubePlaylistId && (
+          <section className="mb-8">
+            <div className="relative aspect-video bg-gray-200 rounded-lg overflow-hidden">
+              <iframe
+                src={`https://www.youtube.com/embed/videoseries?list=${project.youtubePlaylistId}`}
+                title="Related Videos"
+                className="absolute inset-0 w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </section>
+        )}
+
         <section className="mb-8">
           <div className="grid gap-4 md:grid-cols-2">
             {project.images.map((image, index) => (

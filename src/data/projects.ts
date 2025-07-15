@@ -2,7 +2,7 @@ import { Project } from '@/types/project';
 
 export const projects: Project[] = [
   {
-    title: '"The Box"',
+    title: 'The Box',
     description: 'A unique puzzle hunt for a small group of friends',
     longDescription: `In 2021, I went on a two-month volunteering trip to Europe. Before I left, I gave 4 different friends a box and told them not to open it until the day I left.
     
@@ -42,6 +42,7 @@ Some of the challenges included:
 
     `,
     images: ['/images/survivor-1-1.png', '/images/survivor-1-2.png', '/images/survivor-1-3.png'],
+    youtubePlaylistId: 'PLpAljtwjM4XdQ4BFwJvY4TItz23L5AMwJ',
     tags: ['Experience'],
     date: '2021',
     slug: 'survivor'
@@ -55,6 +56,7 @@ Some of the challenges included:
     
     `,
     images: ['/images/survivor-2-1.jpeg', '/images/survivor-2-2.jpeg', '/images/survivor-2-3.jpeg', '/images/survivor-2-4.png'],
+    youtubePlaylistId: 'PLpAljtwjM4XfHxyHT91pKrgilBCVWuNjH',
     tags: ['Experience'],
     date: '2022',
     slug: 'survivor-2'
@@ -76,6 +78,7 @@ The tasks were:
 I edited the videos down, and on my birthday held a watch party where we all came together to view the end result.
     `,
     images: ['/images/taskmaster-1.jpg'],
+    youtubePlaylistId: 'PLpAljtwjM4XellxvLtx96U1bUAu-oOmG0',
     tags: ['Experience'],
     date: '2022',
     slug: 'taskmaster'

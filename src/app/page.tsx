@@ -7,7 +7,7 @@ export default function Home() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <section className="mb-16">
         <div className="grid md:grid-cols-[2fr_1fr] gap-8 md:gap-12 items-center">
-          <div className="order-2 md:order-1 md:text-right">
+          <div className="order-2 md:order-1 md:text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Hi, I&apos;m Eric
             </h1>

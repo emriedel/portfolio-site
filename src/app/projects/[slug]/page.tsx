@@ -2,6 +2,8 @@ import { projects } from '@/data/projects';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface ProjectPageProps {
   params: Promise<{
@@ -43,10 +45,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
         {project.longDescription && (
           <section className="mb-8">
-            <div className="prose prose-lg max-w-none">
-              <p className="text-gray-700 leading-relaxed">
+            <div className="prose prose-lg prose-gray max-w-none">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {project.longDescription}
-              </p>
+              </ReactMarkdown>
             </div>
           </section>
         )}

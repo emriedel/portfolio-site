@@ -4,8 +4,8 @@ export const projects: Project[] = [
   {
     title: '"The Box"',
     description: 'A unique puzzle hunt for a small group of friends',
-    longDescription: 'This interactive game night combined elements of social deduction, creative storytelling, and collaborative problem-solving. The format was designed to work with groups of varying sizes and comfort levels, using adaptive rules and engaging prompts to ensure everyone could participate meaningfully.',
-    images: ['/images/the-box-1.png', '/images/the-box-2.png'],
+    longDescription: 'Test',
+    images: ['/images/the-box-1.jpg', '/images/the-box-2.jpg', '/images/the-box-3.jpg', '/images/the-box-4.jpg', '/images/the-box-5.jpg', '/images/the-box-6.jpg', '/images/the-box-7.jpg'],
     tags: ['Puzzle Hunt'],
     date: '2021',
     slug: 'the-box'

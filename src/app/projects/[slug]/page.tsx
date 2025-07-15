@@ -39,30 +39,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             {project.title}
           </h1>
-          <div className="flex flex-wrap gap-2 mb-4">
-            {project.tags.map((tag) => (
-              <span 
-                key={tag}
-                className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-          <div className="text-gray-600 mb-4">
-            {project.date}
-          </div>
         </header>
 
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Overview</h2>
-          <p className="text-gray-700 text-lg leading-relaxed">
-            {project.description}
-          </p>
-        </section>
+        {project.longDescription && (
+          <section className="mb-8">
+            <div className="prose prose-lg max-w-none">
+              <p className="text-gray-700 leading-relaxed">
+                {project.longDescription}
+              </p>
+            </div>
+          </section>
+        )}
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Images</h2>
           <div className="grid gap-4 md:grid-cols-2">
             {project.images.map((image, index) => (
               <div key={index} className="relative bg-gray-200 rounded-lg aspect-video overflow-hidden">
@@ -76,17 +65,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             ))}
           </div>
         </section>
-
-        {project.longDescription && (
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Detailed Description</h2>
-            <div className="prose prose-lg max-w-none">
-              <p className="text-gray-700 leading-relaxed">
-                {project.longDescription}
-              </p>
-            </div>
-          </section>
-        )}
+        
       </article>
     </div>
   );

@@ -15,7 +15,7 @@ export default function Home() {
               I&apos;m a software product manager and game designer from Seattle, Washington
             </p>
             <p className="text-lg text-gray-600">
-              I like to design &quot;games&quot; that involve some sort of real-world, interactive experience. Here are some of my favorites from over the years.
+              I like to design games that involve some sort of real-world, interactive experience. Here are some of my favorites from over the years.
             </p>
           </div>
           <div className="order-1 md:order-2 flex justify-center">

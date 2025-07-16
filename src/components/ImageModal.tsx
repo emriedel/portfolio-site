@@ -62,14 +62,14 @@ export default function ImageModal({ src, alt, isOpen, onClose }: ImageModalProp
         className={`relative max-w-[90vw] max-h-[90vh] transition-all duration-300 transform ${
           isAnimating ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
         }`}
-        onClick={(e) => e.stopPropagation()}
+        onClick={handleClose}
       >
         <Image
           src={src}
           alt={alt}
           width={1200}
           height={800}
-          className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+          className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
           priority
         />
         <button

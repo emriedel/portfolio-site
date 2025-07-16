@@ -62,7 +62,7 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
             {project.images.map((image, index) => (
               <div 
                 key={index} 
-                className="relative bg-gray-200 rounded-lg aspect-video overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                className="relative bg-gray-200 rounded-lg aspect-[4/3] overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                 onClick={() => setSelectedImage(image)}
               >
                 <Image

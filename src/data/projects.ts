@@ -89,20 +89,20 @@ I edited the videos down to make one "episode", and on my birthday held a watch 
   {
     title: 'Birthday Puzzle Hunt',
     description: 'A puzzle hunt to find the location of my birthday party',
-    longDescription: `This **birthday puzzle hunt** created an engaging treasure hunt experience that combined digital and physical clues to guide friends to the party location.
+    longDescription: `For my birthday in 2023, I ran a puzzle hunt that led my friends around the city of Seattle with the goal of uncovering the location of my party later that night.
 
-## Hunt Structure
-The puzzle incorporated multiple stages:
+Groups started by picking up a packet of papers that contained the starting clues and puzzles that took them on a journey including:
+- A crossword puzzle that revealed the name of a local statue
+- That local statue revealed a code when a piece of paper was placed over its plaque
+- A sudoku puzzle that provided the charter number of a little free library to visit
+- A park sign that helped to solve a book cipher
+- A phone number that played morse code when called
 
-- **Digital clues** sent via social media and messaging
-- *Physical locations* around the city with hidden messages
-- **Collaborative elements** requiring teamwork to solve
-- Time-based challenges that built excitement
+Ultimately, the groups were led to a local park where visiting a website on their phone that could only be accessed from that location revealed the bar where I would be hanging out that evening.
 
-The hunt culminated in a final reveal at the party location, where participants discovered not just the venue but also *additional surprises* waiting for them.
-
-This personalized experience turned a simple birthday invitation into an **memorable adventure** that guests talked about long after the celebration ended.`,
-    images: ['/images/birthday-puzzle-hunt-1.png', '/images/birthday-puzzle-hunt-2.png', '/images/birthday-puzzle-hunt-3.png'],
+One of the main goals of this puzzle hunt was to see if I could expand on the earlier "The Box" puzzle hunt I made and make something that was scalable to more people as well as achievable in a day, and I think I was very successful in that regard.
+    `,
+    images: ['/images/birthday-puzzle-hunt-1.png', '/images/birthday-puzzle-hunt-2.jpg', '/images/birthday-puzzle-hunt-3.jpg', '/images/birthday-puzzle-hunt-4.jpg', '/images/birthday-puzzle-hunt-5.png', '/images/birthday-puzzle-hunt-6.png'],
     tags: ['Experience'],
     date: '2023',
     slug: 'birthday-puzzle-hunt'

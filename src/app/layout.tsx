@@ -4,6 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
+import { FastPrAnalytics } from '@/components/fast-pr-analytics';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -42,7 +43,8 @@ export default function RootLayout({
           </main>
           <Footer />
         </div>
-      </body>
+            <FastPrAnalytics />
+</body>
     </html>
   );
 }

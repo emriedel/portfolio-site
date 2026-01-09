@@ -84,7 +84,7 @@ function AnalyticsTracker() {
   return null;
 }
 
-export function TallyAnalytics() {
+export function FastPrAnalytics() {
   return (
     <Suspense fallback={null}>
       <AnalyticsTracker />

@@ -2,6 +2,42 @@ import { Project } from '@/types/project';
 
 export const projects: Project[] = [
   {
+    title: 'Nerdcube Daily',
+    description: 'A collection of free daily puzzle games',
+    longDescription: `In early 2026, I created Nerdcube Daily, a collection of five daily puzzle games:
+
+- **Dabble** - Build the highest-scoring words on a random daily Scrabble board
+- **Carom** - Slide pieces around a grid to reach the goal in the fewest moves
+- **Inlay** - Fill the target shape using pentomino pieces
+- **Trio** - Find all five groups of shapes that make up a Trio
+- **Jumble** - Find words in a grid of letters before time runs out`,
+    images: ['/images/nerdcube-daily-1.jpg'],
+    tags: ['Web Game'],
+    date: '2026',
+    slug: 'nerdcube-daily',
+    url: 'https://www.nerdcube.games/'
+  },
+  {
+    title: 'Challenge League',
+    description: 'A photo competition app where friends compete in weekly creative challenges',
+    longDescription: `In 2025, I created Challenge League, a mobile-first web app where friends form leagues and compete in weekly photo challenges.
+
+Each week, everyone in a league receives the same challenge prompt. Players submit their best photo response, then vote on each other's submissions to earn points and climb the leaderboard.
+
+Some examples of prompts I used include:
+- Cook the most beautiful meal for yourself
+- Take the coolest photo that incorporates shadows
+- Recreate a famous movie poster
+- Find the coolest-looking house or building
+
+This game was primarily inspired by Taskmaster (creative challenges), Music League (weekly leagues with your friends), and BeReal (regular photo sharing).`,
+    images: ['/images/challenge-league-1.jpg'],
+    tags: ['Web Game'],
+    date: '2025',
+    slug: 'challenge-league',
+    url: 'https://www.challenge-league.app/'
+  },
+  {
     title: 'The Box',
     description: 'A unique puzzle hunt for a small group of friends',
     longDescription: `In 2021, I went on a two-month volunteering trip to Europe. Before I left, I gave four different friends a box and told them not to open it until the day I left.

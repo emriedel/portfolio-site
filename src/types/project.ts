@@ -6,5 +6,6 @@ export interface Project {
   tags: string[];
   date: string;
   slug: string;
+  url?: string;
   youtubePlaylistId?: string;
 }

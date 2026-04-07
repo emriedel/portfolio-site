@@ -11,7 +11,7 @@ export const projects: Project[] = [
 - **Inlay** - Fill the target shape using pentomino pieces
 - **Trio** - Find all five groups of shapes that make up a Trio
 - **Jumble** - Find words in a grid of letters before time runs out`,
-    images: ['/images/nerdcube-daily-1.jpg'],
+    images: ['/images/nerdcube-dabble.png', '/images/nerdcube-carom.png', '/images/nerdcube-inlay.png', '/images/nerdcube-trio.png', '/images/nerdcube-jumble.png'],
     tags: ['Web Game'],
     date: '2026',
     slug: 'nerdcube-daily',

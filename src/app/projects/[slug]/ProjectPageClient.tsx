@@ -54,16 +54,6 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
               </a>
             )}
           </div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full border border-neutral-200 px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wider text-neutral-600"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
         </header>
 
         {project.longDescription && (

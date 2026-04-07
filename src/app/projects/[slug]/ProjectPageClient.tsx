@@ -59,7 +59,21 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
         {project.longDescription && (
           <section className="mb-10">
             <div className="prose prose-lg prose-neutral max-w-none">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  a: ({ href, children }) => (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-neutral-900 underline underline-offset-2 decoration-neutral-400 hover:decoration-neutral-900 transition-colors"
+                    >
+                      {children}
+                    </a>
+                  ),
+                }}
+              >
                 {project.longDescription}
               </ReactMarkdown>
             </div>

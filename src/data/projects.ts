@@ -6,11 +6,11 @@ export const projects: Project[] = [
     description: 'A collection of free daily puzzle games',
     longDescription: `In early 2026, I created Nerdcube Daily, a collection of five daily puzzle games:
 
-- **Dabble** - Build the highest-scoring words on a random daily Scrabble board
-- **Carom** - Slide pieces around a grid to reach the goal in the fewest moves
-- **Inlay** - Fill the target shape using pentomino pieces
-- **Trio** - Find all five groups of shapes that make up a Trio
-- **Jumble** - Find words in a grid of letters before time runs out`,
+- [**Dabble**](https://nerdcube.games/dabble) - Build the highest-scoring words on a random daily Scrabble board
+- [**Carom**](https://nerdcube.games/carom) - Slide pieces around a grid to reach the goal in the fewest moves
+- [**Inlay**](https://nerdcube.games/inlay) - Fill the target shape using pentomino pieces
+- [**Trio**](https://nerdcube.games/trio) - Find all five groups of shapes that make up a Trio
+- [**Jumble**](https://nerdcube.games/jumble) - Find words in a grid of letters before time runs out`,
     images: ['/images/nerdcube-dabble.png', '/images/nerdcube-carom.png', '/images/nerdcube-inlay.png', '/images/nerdcube-trio.png', '/images/nerdcube-jumble.png'],
     tags: ['Web Game'],
     date: '2026',

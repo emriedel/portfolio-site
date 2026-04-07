@@ -20,8 +20,7 @@ export const metadata: Metadata = {
   description: "Eric Riedel's portfolio showcasing gaming design projects",
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", type: "image/x-icon" }
+      { url: "/favicon.svg", type: "image/svg+xml" }
     ]
   }
 };
@@ -34,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="min-h-screen flex flex-col">
           <Navigation />

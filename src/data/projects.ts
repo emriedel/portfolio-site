@@ -31,7 +31,7 @@ Some examples of prompts I used include:
 - Find the coolest-looking house or building
 
 This game was primarily inspired by Taskmaster (creative challenges), Music League (weekly leagues with your friends), and BeReal (regular photo sharing).`,
-    images: ['/images/challenge-league-1.jpg'],
+    images: ['/images/challenge-league.png'],
     tags: ['Web Game'],
     date: '2025',
     slug: 'challenge-league',

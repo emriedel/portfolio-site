@@ -4,80 +4,68 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#2f4a43">
+<meta name="theme-color" content="#f5f5f2">
 <title>The gallery</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap">
 <style>
 :root {
-  --wall: #2f4a43;
-  --wall-deep: #23372f;
-  --wall-lit: #3d5d53;
-  --ghost: #385850;          /* unfaded paint where a frame used to hang */
-  --nail: #9aa59f;
-  --ink: #edf2ee;
-  --ink-soft: #b3c6bd;
-  --frame: #4a3426;
-  --frame-hi: #6d4f3a;
-  --brass: #b98f3a;
-  --brass-hi: #e2c579;
-  --mat: #f1f2ee;
-  --mat-ink: #1e2925;
-  --mat-wrong: #f3d6d0;
-  --card: #f7f8f5;
-  --card-line: #d6dbd6;
-  --card-ink: #1e2925;
-  --card-soft: #5c6b65;
+  --wall: #f5f5f2;
+  --ink: #1c1c1a;
+  --soft: #6d6d67;
+  --line: #d9d9d3;
+  --frame: #1c1c1a;
+  --mat: #fff;
+  --tape: #e7dab4;
+  --pen: #222220;
+  --check: #2e8540;
+  --wrong: #c43d2b;
+  --focus: #2563d6;
   --c-red: #c8433a;
   --c-yellow: #e0b533;
   --c-green: #3d8b57;
   --c-blue: #3a71c1;
-  --serif: "Alegreya", ui-serif, "Iowan Old Style", Georgia, serif;
-  --sans: "Alegreya Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  color-scheme: dark;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --hand: "Caveat", "Noteworthy", "Bradley Hand", cursive;
+  --gap: clamp(8px, 2.6vw, 20px);
+  --ratio: 1.2;                 /* frame height ÷ width */
+  /* masking tape, torn at both ends */
+  --torn: polygon(2% 0, 98% 0, 100% 18%, 97% 35%, 100% 52%, 97% 70%, 100% 86%, 98% 100%, 2% 100%, 0 84%, 3% 66%, 0 50%, 3% 33%, 0 16%);
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
-  min-height: 100vh;
-  min-height: 100dvh;
-  background: var(--wall-deep);
+  background: var(--wall);
   color: var(--ink);
   font: 400 17px/1.5 var(--sans);
   padding-inline: max(18px, env(safe-area-inset-left)) max(18px, env(safe-area-inset-right));
   padding-block: max(20px, env(safe-area-inset-top)) max(28px, env(safe-area-inset-bottom));
   -webkit-tap-highlight-color: transparent;
 }
-body::before {                /* a picture light washing down the painted wall */
-  content: "";
-  position: fixed; inset: 0; z-index: -1;
-  background: radial-gradient(120% 70% at 50% 0%, var(--wall-lit) 0%, var(--wall) 45%, var(--wall-deep) 100%);
-}
 main, #reward { max-width: 620px; margin: 0 auto; }
 
-h1 {
-  font: 700 clamp(2rem, 9vw, 2.75rem)/1.05 var(--serif);
-  letter-spacing: -0.01em;
-  margin: 8px 0 14px;
-}
-.poem { font: italic 400 1.125rem/1.55 var(--serif); margin: 0; }
-.poem span { display: block; padding-left: 1.2em; text-indent: -1.2em; }
+h1 { font-size: 1.75rem; line-height: 1.2; font-weight: 700; margin: 4px 0 12px; }
+.poem { margin: 0; }
+.poem span { display: block; padding-left: 1.2em; text-indent: -1.2em; text-wrap: balance; }
 
-/* The wall: 3 rows of 5, the same shape as the one at home. */
-.wall-wrap { margin: 34px 0 0; scroll-margin-top: 14px; }
+/* The wall: 3 rows of 5, with some columns hung lower, as at home. */
+.wall-wrap { margin-top: 32px; }
 .wall {
   display: grid;
   grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr));
-  column-gap: clamp(7px, 2.4vw, 18px);
-  row-gap: clamp(16px, 4.6vw, 30px);
-  padding-top: 8px;
+  column-gap: var(--gap);
+  row-gap: calc(var(--gap) * 1.6);
+  /* room for the lowered columns */
+  padding-bottom: calc((100% - (var(--cols, 5) - 1) * var(--gap)) / var(--cols, 5) * var(--ratio) * var(--max-drop, 0));
 }
 .slot {
   position: relative;
-  aspect-ratio: 5 / 6;
+  aspect-ratio: 1 / var(--ratio);
+  transform: translateY(calc(var(--drop, 0) * 100%));
   padding: 0;
   border: 0;
   background: none;
@@ -86,144 +74,148 @@ h1 {
   cursor: pointer;
   touch-action: manipulation;
 }
-.slot::before {               /* the nail */
-  content: "";
-  position: absolute;
-  top: -7px; left: 50%;
-  width: 5px; height: 5px;
-  margin-left: -2.5px;
-  border-radius: 50%;
-  background: var(--nail);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .5);
-}
-.ghost {
-  position: absolute; inset: 0;
-  background: var(--ghost);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .04), inset 0 0 12px rgba(0, 0, 0, .12);
-  display: grid; place-items: center;
-}
-.ghost::after { content: "+"; font: 400 1.4rem/1 var(--sans); color: var(--ink-soft); opacity: .45; }
 .frame {
   position: absolute; inset: 0;
-  padding: 9%;
-  background: linear-gradient(150deg, var(--frame-hi), var(--frame) 60%);
-  box-shadow: 0 9px 14px -7px rgba(0, 0, 0, .6), 0 2px 3px rgba(0, 0, 0, .35), inset 0 0 0 1px rgba(0, 0, 0, .35);
-}
-.mat {
-  height: 100%;
-  display: grid; place-items: center;
-  padding: 3px;
+  border: max(2px, .55vw) solid var(--frame);
   background: var(--mat);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, .35);
-  transition: background-color .25s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .14);
 }
-.label {
-  color: var(--mat-ink);
-  font: 700 clamp(.66rem, 2.9vw, .95rem)/1.08 var(--serif);
+.frame::before {              /* the edge of the mat's window */
+  content: "";
+  position: absolute; inset: 13%;
+  border: 1px solid var(--line);
+}
+.frame.empty::after {
+  content: "+";
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  color: #b3b3ac;
+  font-size: 1.25rem;
+}
+.tape {
+  position: absolute;
+  left: -7%; right: -7%; top: 44%;
+  transform: translateY(-50%) rotate(var(--tilt, 0deg));
+  padding: 5px 4px;
+  background: var(--tape);
+  clip-path: var(--torn);
+  color: var(--pen);
+  font: 600 clamp(.9rem, 4vw, 1.3rem)/.95 var(--hand);
   text-align: center;
   text-wrap: balance;
   overflow-wrap: break-word;
-  -webkit-hyphens: manual;
-  hyphens: manual;
 }
-.slot.target .ghost, .slot.target .frame { outline: 2px solid var(--mat); outline-offset: 4px; }
+.check {
+  position: absolute;
+  right: 5%; bottom: 4%;
+  width: 34%;
+  fill: none;
+  stroke: var(--check);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.check.draw path { stroke-dasharray: 30; stroke-dashoffset: 30; animation: draw .3s ease-out forwards; animation-delay: calc(var(--col) * 90ms); }
 .slot.locked { cursor: default; }
-.slot.locked .frame { background: linear-gradient(150deg, var(--brass-hi), var(--brass) 55%); }
-.slot.wrong .frame { animation: shake .42s; }
-.slot.wrong .mat { background: var(--mat-wrong); }
+.slot.target .frame { outline: 2px solid var(--focus); outline-offset: 3px; }
 .slot:focus-visible { outline: none; }
-.slot:focus-visible .ghost, .slot:focus-visible .frame { outline: 2px solid var(--brass-hi); outline-offset: 4px; }
-.wall.solved .frame { animation: gild .7s ease-out both; animation-delay: calc(var(--i) * 70ms); }
+.slot:focus-visible .frame { outline: 2px solid var(--focus); outline-offset: 3px; }
+.slot.wrong .frame { animation: shake .42s; }
+.slot.wrong .tape { color: var(--wrong); }
 @keyframes shake { 20%, 60% { transform: translateX(-3px); } 40%, 80% { transform: translateX(3px); } }
-@keyframes gild { 50% { filter: brightness(1.45) saturate(1.2); transform: translateY(-2px); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
 
-.count { color: var(--ink-soft); margin: 22px 0 0; }
-.status { margin: 6px 0 0; min-height: 1.5em; font-weight: 500; }
-.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 16px; }
+.count { color: var(--soft); margin: 22px 0 0; }
+.status { margin: 4px 0 0; min-height: 1.5em; font-weight: 600; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 14px; }
 
 .btn {
-  font: 700 1.0625rem/1 var(--sans);
-  min-height: 50px;
-  padding: 0 24px;
-  border-radius: 6px;
+  font: 600 1rem/1 var(--sans);
+  min-height: 48px;
+  padding: 0 20px;
   border: 0;
+  border-radius: 4px;
   cursor: pointer;
   touch-action: manipulation;
 }
-.btn.primary { background: var(--mat); color: var(--mat-ink); box-shadow: 0 3px 0 rgba(0, 0, 0, .25); }
-.btn.primary:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0, 0, 0, .25); }
-.btn.primary:disabled { opacity: .4; cursor: default; }
-.btn.text {
-  background: none; color: var(--ink-soft);
-  font-weight: 500; padding: 0 2px;
-  text-decoration: underline; text-underline-offset: 3px;
-}
-.btn:focus-visible { outline: 2px solid var(--brass-hi); outline-offset: 3px; }
+.btn.primary { background: var(--ink); color: #fff; }
+.btn.primary:disabled { background: #c9c9c3; cursor: default; }
+.btn.text { background: none; color: var(--ink); font-weight: 400; padding: 0 2px; text-decoration: underline; text-underline-offset: 3px; }
+.btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
-/* The list of parks slides up from the bottom. The wall stays tappable above it. */
+/* The pile of labels slides up from the bottom; the wall stays tappable above it. */
 .sheet {
   position: fixed; left: 0; right: 0; bottom: 0;
   max-width: 660px; margin: 0 auto;
-  max-height: 56vh; max-height: 56dvh;
+  max-height: 48vh; max-height: 48dvh;
   display: flex; flex-direction: column;
-  background: var(--card); color: var(--card-ink);
-  border-radius: 14px 14px 0 0;
-  box-shadow: 0 -12px 34px rgba(0, 0, 0, .4);
-  padding: 14px max(16px, env(safe-area-inset-left)) max(14px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right));
-  color-scheme: light;
-  animation: rise .22s ease-out;
+  background: #fff;
+  border-top: 1px solid var(--line);
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, .08);
+  padding: 12px max(16px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right));
+  animation: rise .2s ease-out;
 }
 @keyframes rise { from { transform: translateY(100%); } }
-.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 10px; }
-.sheet-head h2 { font: 700 1.25rem/1.2 var(--serif); margin: 0; }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 6px; }
+.sheet-head h2 { font-size: 1.0625rem; font-weight: 600; margin: 0; }
 .sheet-head h2:focus { outline: none; }
-.sheet .btn { min-height: 42px; padding: 0 16px; }
-.sheet .btn.done { background: var(--card-ink); color: var(--card); }
-.sheet .btn.text { color: var(--card-soft); }
+.sheet .btn { min-height: 40px; padding: 0 16px; }
 .sheet-list {
   overflow-y: auto; overscroll-behavior: contain;
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 8px; padding: 2px 2px 8px;
-  margin-inline: -2px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px 14px;
+  padding: 10px 6px 12px;
 }
 .park {
-  display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px;
-  min-height: 56px;
-  padding: 8px 12px;
-  text-align: left;
-  background: #fff;
-  color: var(--card-ink);
-  border: 1px solid var(--card-line);
-  border-radius: 6px;
-  font: inherit;
+  position: relative;
+  isolation: isolate;
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 0;
+  background: none;
+  color: var(--pen);
+  font: 600 1.375rem/1 var(--hand);
+  transform: rotate(var(--tilt, 0deg));
   cursor: pointer;
   touch-action: manipulation;
 }
-.park:active { background: #eef1ec; }
-.park:focus-visible { outline: 2px solid var(--c-blue); outline-offset: 2px; }
-.park-name { font: 700 1.0625rem/1.15 var(--serif); }
-.park-where, .park-at { font-size: .875rem; line-height: 1.25; color: var(--card-soft); }
-.park.hung { background: transparent; border-style: dashed; }
-.park.hung .park-name { color: var(--card-soft); }
-.park.here { border: 2px solid var(--card-ink); padding: 7px 11px; }
-.park-at { color: var(--card-ink); font-weight: 500; }
-.sheet-foot { padding-top: 6px; }
+.park::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--tape); clip-path: var(--torn); }
+.park:active::before { filter: brightness(.94); }
+.park:disabled { opacity: .3; filter: grayscale(1); cursor: default; }
+.park:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.sheet-foot { padding-top: 4px; }
 
 /* The reward: one more picture for the wall. */
-#reward { padding-top: 8px; }
 #reward h1:focus { outline: none; }
-.prize { display: flex; align-items: flex-end; gap: 18px; margin: 30px 0 28px; }
-.prize .slot { width: min(46vw, 210px); flex: none; cursor: default; }
-.prize .mat { background: var(--tile, var(--c-blue)); box-shadow: inset 0 2px 6px rgba(0, 0, 0, .35); }
-.prize .digit { font: 700 clamp(4.5rem, 26vw, 8rem)/1 var(--serif); color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, .18); }
-.plaque { font: 500 1rem/1.3 var(--sans); color: var(--ink-soft); padding-bottom: 6px; }
-.plaque b { display: block; font: 700 1.375rem/1.2 var(--serif); color: var(--ink); }
+.prize { display: flex; align-items: flex-end; gap: 18px; margin: 28px 0 26px; }
+.prize-frame {
+  flex: none;
+  width: min(44vw, 200px);
+  aspect-ratio: 1 / var(--ratio);
+  padding: 12%;
+  border: max(3px, .7vw) solid var(--frame);
+  background: var(--mat);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .14);
+}
+.digit {
+  display: grid; place-items: center;
+  height: 100%;
+  background: var(--tile, var(--c-blue));
+  color: #fff;
+  font: 600 clamp(4.5rem, 24vw, 8rem)/1 var(--hand);
+}
+.plaque { margin: 0; padding-bottom: 4px; color: var(--soft); }
+.plaque b { display: block; font-size: 1.375rem; color: var(--ink); }
 #reward .poem { margin-bottom: 26px; }
-.rise { animation: rise-in .6s ease-out both; }
-@keyframes rise-in { from { opacity: 0; transform: translateY(14px); } }
+/* Slide only, no fade: if the animation never runs, the reward still shows. */
+.rise { animation: rise-in .45s ease-out; }
+@keyframes rise-in { from { transform: translateY(16px); } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+  .check.draw path { stroke-dashoffset: 0; }
 }
 </style>
 </head>
@@ -231,7 +223,7 @@ h1 {
 <main id="puzzle">
   <h1 id="title"></h1>
   <p class="poem" id="poem"></p>
-  <section class="wall-wrap" id="wall-wrap" aria-label="The wall">
+  <section class="wall-wrap" aria-label="The wall">
     <div class="wall" id="wall"></div>
   </section>
   <p class="count" id="count"></p>
@@ -246,7 +238,7 @@ h1 {
 <section id="reward" hidden>
   <h1 id="r-title" tabindex="-1"></h1>
   <div class="prize" id="r-prize">
-    <div class="slot"><div class="frame"><div class="mat"><span class="digit" id="r-digit"></span></div></div></div>
+    <div class="prize-frame"><span class="digit" id="r-digit"></span></div>
     <p class="plaque" id="r-plaque"></p>
   </div>
   <p class="poem" id="r-lines"></p>
@@ -256,7 +248,7 @@ h1 {
 <div class="sheet" id="sheet" role="dialog" aria-labelledby="sheet-title" hidden>
   <div class="sheet-head">
     <h2 id="sheet-title" tabindex="-1"></h2>
-    <button class="btn done" id="sheet-done" type="button">Done</button>
+    <button class="btn primary" id="sheet-done" type="button">Done</button>
   </div>
   <div class="sheet-list" id="sheet-list"></div>
   <div class="sheet-foot" id="sheet-foot" hidden>
@@ -264,7 +256,7 @@ h1 {
   </div>
 </div>
 
-<script>const PUZZLE = {"title":"The gallery","poem":["Fifteen parks share a wall in a place you’ve been,","in three rows of five, every summit and scene.","Their labels fell off, and they’ve all landed here:","hang each by its picture, and the next step is clear."],"rows":3,"cols":5,"rowNames":["top","middle","bottom"],"parks":[{"id":"arches","name":"Arches","where":"Utah"},{"id":"bryce-canyon","name":"Bryce Canyon","where":"Utah"},{"id":"canyonlands","name":"Canyonlands","short":"Canyon­lands","where":"Utah"},{"id":"capitol-reef","name":"Capitol Reef","where":"Utah"},{"id":"crater-lake","name":"Crater Lake","where":"Oregon"},{"id":"glacier-bay","name":"Glacier Bay","where":"Alaska"},{"id":"hawai-i-volcanoes","name":"Hawaiʻi Volcanoes","short":"Hawaiʻi Volca­noes","where":"Hawaii"},{"id":"joshua-tree","name":"Joshua Tree","where":"California"},{"id":"mount-rainier","name":"Mount Rainier","where":"Washington"},{"id":"north-cascades","name":"North Cascades","where":"Washington"},{"id":"olympic","name":"Olympic","where":"Washington"},{"id":"redwood","name":"Redwood","where":"California"},{"id":"yellowstone","name":"Yellowstone","short":"Yellow­stone","where":"Wyoming"},{"id":"yosemite","name":"Yosemite","where":"California"},{"id":"zion","name":"Zion","where":"Utah"}],"iterations":60000,"salt":"pPQdJ4mE+3oj+PKl6saBow==","rowHash":["bda753f5c0e59756f0580001c5f9b99cf88157cee5a8ce2815b3d5146b7238b0","5707cde059415cc5f4beef92c7e131e974465477bf9e1aaf5d0538a0ea913e58","6c10b55aaf0d7fd8d037c81aaf88f58a2fcaeb23f25d61bb7b2d864b225a34ac"],"reward":{"iv":"BIjoZM4I/50G8TBT","ct":"GrMCvPGeKFx/4v6VYADfIjCZSTYhcDH/WUQYAphiCGQdfKTDIG89Ftcn5NzQFkmaF/v0NTBXMenN7N1QfFeHXzir+cycWMnSBC4CTisgxHQTLRLaDfrp4qbvjn6GGG8mkoMyGoz9RXdAzTzah515ZsZrCqq66P4PV+5xTx/EYzV4F0ZCccoVN4uQyK392kXKG+yI2QNerpTOLrsm/kHF6NF9l1y3CFaZ/qSGKEnjrjSY5uhXrSmtraE4iOqLIAZPWUKFqW2dBtrIBLDPztApkACMspDaXHYLMbiQiL2aLAnNqYgHx2AxYIC/jCKoU2drEfcBYbhWtoBWDg2JsuLPG7x6ivyuqQpCICLj1wqbA+/k9/u3IsgtzHX3Cj2fJ0TlVWXH3MOWpFvn4Krsmigp"}};</script>
+<script>const PUZZLE = {"title":"The gallery","poem":["Fifteen parks share a wall in a place you’ve been,","in three rows of five, every summit and scene.","Their labels fell off, and they’ve all landed here:","hang each by its picture, and the next step is clear."],"rows":3,"cols":5,"rowNames":["top","middle","bottom"],"drop":[0,0.5,0,0.5,0],"parks":[{"id":"arches","name":"Arches"},{"id":"bryce-canyon","name":"Bryce Canyon"},{"id":"canyonlands","name":"Canyonlands","short":"Canyon­lands"},{"id":"capitol-reef","name":"Capitol Reef"},{"id":"crater-lake","name":"Crater Lake"},{"id":"glacier-bay","name":"Glacier Bay"},{"id":"hawai-i-volcanoes","name":"Hawai‘i Volcanoes","short":"Hawai‘i Volca­noes"},{"id":"joshua-tree","name":"Joshua Tree"},{"id":"mount-rainier","name":"Mount Rainier"},{"id":"north-cascades","name":"North Cascades"},{"id":"olympic","name":"Olympic"},{"id":"redwood","name":"Redwood"},{"id":"yellowstone","name":"Yellowstone","short":"Yellow­stone"},{"id":"yosemite","name":"Yosemite"},{"id":"zion","name":"Zion"}],"iterations":60000,"salt":"46U3nRSkuhIEYuM+QkFvQw==","rowHash":["f9dd0ccf1c58b2176bbe650cc1b6a77a714d8dffed47118eb6547b9212077e7e","d063bbdaa54260fa6b4a5535e864efc3441d0455d745eeddc52bce80754bbfba","6a79cadd0e8f8cbc5cb3b3d33bee74c47f3cc8348a426bb9b4dcb612a7552efa"],"reward":{"iv":"SOw13peIvd4zGVNw","ct":"MDEV4hS7RAgGv3vEcZM6y0yZ7Yn3RrCEIMdbRW798pPaIvn2aehU26xsy7+yM88aePun+Sqf+YugsqwiVVQQIERvNBwI37udV9G+ZcuMcV+VZWVdfbfUcHcxnekh34vG/u37+iKGOEPEwXGXbgzA/HKQpBhgvjmIJ3NAvESIDxYtglWwe7MzVt0Gsyj7kxJtaH2dYhUAut8X3VzLJRD+yWPCdVdYWjJqauqcOjjIyFW0pouIzkasrteyvKEtEvMWrYldUWoI3ublsQPbh8GHdsCRo+AAoq5rWO5enkrpFJr2j9D8xusbbOLyYwHHapFGPOVDjTzdAxyc6xWFddvw8KLmsDl1EGIRicuQO8B+CcsyJ8Q8t80qtbE9aqVIRToPaF+GPGjKiKSqu4xuwRRo"}};</script>
 <script>
 (() => {
   "use strict";
@@ -279,11 +271,13 @@ h1 {
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const STORE = "gallery:" + P.salt.slice(0, 12);
+  const SVG = "http://www.w3.org/2000/svg";
 
-  let place = Array(N).fill(null); // park id hanging in each frame, reading order
+  let place = Array(N).fill(null); // park id labeling each frame, reading order
   let locked = Array(P.rows).fill(false);
+  let justLocked = [];             // rows whose check marks should draw in
   let solved = null;               // the decrypted reward, once all rows are right
-  let target = null;               // the frame the park list is choosing for
+  let target = null;               // the frame the label pile is choosing for
   let busy = false;
   let clearArmed = 0;
 
@@ -294,6 +288,18 @@ h1 {
     const names = rs.map((r) => P.rowNames[r]);
     const list = names.length === 1 ? names[0] : names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
     return "the " + list + " row" + (rs.length > 1 ? "s" : "");
+  };
+  // Each label keeps the same slight tilt wherever it appears.
+  const tilt = (id) => {
+    let h = 0;
+    for (const c of id) h = (h * 31 + c.charCodeAt(0)) | 0;
+    return ((Math.abs(h) % 7) - 3) * 0.8 + "deg";
+  };
+  const el = (tag, cls, text) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
   };
 
   // Progress survives a refresh or a locked phone.
@@ -329,19 +335,27 @@ h1 {
   // ---- The wall ----
   const wall = $("wall");
   wall.style.setProperty("--cols", P.cols);
+  wall.style.setProperty("--max-drop", Math.max(...P.drop));
   const slots = [];
   for (let i = 0; i < N; i++) {
-    const b = document.createElement("button");
+    const b = el("button", "slot");
     b.type = "button";
-    b.className = "slot";
-    b.style.setProperty("--i", i);
+    b.style.setProperty("--drop", P.drop[i % P.cols]);
     b.addEventListener("click", () => { if (!locked[rowOf(i)]) openSheet(i); });
     wall.appendChild(b);
     slots.push(b);
   }
 
-  function lines(el, list) {
-    el.replaceChildren(...list.map((t) => Object.assign(document.createElement("span"), { textContent: t })));
+  function checkMark(col, draw) {
+    const svg = document.createElementNS(SVG, "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("class", "check" + (draw ? " draw" : ""));
+    svg.setAttribute("aria-hidden", "true");
+    svg.style.setProperty("--col", col);
+    const path = document.createElementNS(SVG, "path");
+    path.setAttribute("d", "M3.5 13.5 L9 19 L21 5");
+    svg.appendChild(path);
+    return svg;
   }
 
   function render() {
@@ -355,17 +369,18 @@ h1 {
       const key = (id || "") + (isLocked ? "!" : "");
       if (b.dataset.key === key) return;
       b.dataset.key = key;
-      if (!id) {
-        b.replaceChildren(Object.assign(document.createElement("span"), { className: "ghost" }));
-      } else {
+      const frame = el("span", id ? "frame" : "frame empty");
+      const parts = [frame];
+      if (id) {
         const p = byId.get(id);
-        const frame = Object.assign(document.createElement("span"), { className: "frame" });
-        const mat = Object.assign(document.createElement("span"), { className: "mat" });
-        mat.appendChild(Object.assign(document.createElement("span"), { className: "label", textContent: p.short || p.name }));
-        frame.appendChild(mat);
-        b.replaceChildren(frame);
+        const tape = el("span", "tape", p.short || p.name);
+        tape.style.setProperty("--tilt", tilt(id));
+        frame.appendChild(tape);
       }
+      if (isLocked) parts.push(checkMark(i % P.cols, justLocked.includes(rowOf(i)) && !reduced));
+      b.replaceChildren(...parts);
     });
+    justLocked = [];
     const hung = place.filter(Boolean).length;
     $("count").textContent = solved ? "Every row is right."
       : hung === 0 ? "Tap a frame to hang a park in it."
@@ -380,7 +395,7 @@ h1 {
 
   function say(text) { $("status").textContent = text; }
 
-  // ---- The park list ----
+  // ---- The pile of labels ----
   const sheet = $("sheet");
 
   function openSheet(i) {
@@ -391,10 +406,21 @@ h1 {
     render();
     // Leave room to scroll the wall up above the sheet.
     document.body.style.paddingBottom = sheet.offsetHeight + 24 + "px";
-    if (!wasOpen) {
-      $("wall-wrap").scrollIntoView({ block: "start", behavior: reduced ? "auto" : "smooth" });
-      $("sheet-title").focus({ preventScroll: true });
-    }
+    if (!wasOpen) $("sheet-title").focus({ preventScroll: true });
+    reveal(i);
+  }
+
+  // Keep the chosen frame in view above the sheet: the whole wall if it
+  // fits, otherwise just that frame.
+  function reveal(i) {
+    const limit = innerHeight - sheet.offsetHeight - 16;
+    const w = wall.getBoundingClientRect();
+    const r = slots[i].getBoundingClientRect();
+    let dy = 0;
+    if (w.height <= limit - 12) { if (w.top < 12 || w.bottom > limit) dy = w.top - 12; }
+    else if (r.bottom > limit) dy = r.bottom - limit;
+    else if (r.top < 12) dy = r.top - 12;
+    if (dy) scrollBy({ top: dy, behavior: reduced ? "auto" : "smooth" });
   }
 
   function closeSheet() {
@@ -411,15 +437,10 @@ h1 {
     $("sheet-title").textContent = cap(where(target));
     const lockedIds = new Set(place.filter((id, i) => id && locked[rowOf(i)]));
     const items = P.parks.filter((p) => !lockedIds.has(p.id)).map((p) => {
-      const at = place.indexOf(p.id);
-      const b = document.createElement("button");
+      const b = el("button", "park", p.name);
       b.type = "button";
-      b.className = "park" + (at === target ? " here" : at >= 0 ? " hung" : "");
-      b.appendChild(Object.assign(document.createElement("span"), { className: "park-name", textContent: p.name }));
-      if (p.where) b.appendChild(Object.assign(document.createElement("span"), { className: "park-where", textContent: p.where }));
-      if (at >= 0) b.appendChild(Object.assign(document.createElement("span"), {
-        className: "park-at", textContent: at === target ? "In this frame" : "In the " + where(at),
-      }));
+      b.disabled = place.includes(p.id); // already on the wall
+      b.style.setProperty("--tilt", tilt(p.id));
       b.addEventListener("click", () => hang(p.id));
       return b;
     });
@@ -438,14 +459,10 @@ h1 {
   function hang(id) {
     const i = target;
     const was = place[i];
-    const from = place.indexOf(id);
-    if (from !== i) {
-      place[i] = id;
-      if (from >= 0) place[from] = was; // swap the two frames
-    }
+    place[i] = id; // a label it replaces goes back on the pile
     changed();
     // Filling an empty frame moves on to the next empty one, so a team
-    // standing at the wall can go left to right without closing the list.
+    // standing at the wall can go left to right without closing the pile.
     const next = was ? null : nextEmpty(i);
     if (next !== null) openSheet(next); else closeSheet();
   }
@@ -483,6 +500,7 @@ h1 {
       return;
     }
     right.forEach((r) => { locked[r] = true; });
+    justLocked = right;
     busy = false;
     $("check").textContent = "Check the wall";
     save();
@@ -509,11 +527,8 @@ h1 {
       return;
     }
     render();
-    if (!restoring && !reduced) {
-      wall.classList.add("solved");
-      await wait(1500);
-    }
-    showReward(true);
+    if (!restoring && !reduced) await wait(1100); // let the last check marks draw in
+    showReward(!restoring);
   }
 
   function showReward(animate) {
@@ -524,12 +539,9 @@ h1 {
       const c = R.digit.color;
       document.documentElement.style.setProperty("--tile", /^[a-z]+$/.test(c) ? "var(--c-" + c + ")" : c);
       $("r-digit").textContent = R.digit.value;
-      $("r-plaque").replaceChildren(
-        Object.assign(document.createElement("b"), { textContent: cap(c) }),
-        document.createTextNode("Write it in the " + c + " box."),
-      );
+      $("r-plaque").replaceChildren(el("b", null, cap(c)), document.createTextNode("Write it in the " + c + " box."));
     }
-    lines($("r-lines"), R.lines || []);
+    $("r-lines").replaceChildren(...(R.lines || []).map((t) => el("span", null, t)));
     $("puzzle").hidden = true;
     const view = $("reward");
     view.hidden = false;
@@ -541,7 +553,7 @@ h1 {
   // ---- Wiring ----
   $("title").textContent = P.title;
   document.title = P.title;
-  lines($("poem"), P.poem);
+  $("poem").replaceChildren(...P.poem.map((t) => el("span", null, t)));
   $("check").addEventListener("click", check);
   $("sheet-done").addEventListener("click", closeSheet);
   $("take-down").addEventListener("click", takeDown);

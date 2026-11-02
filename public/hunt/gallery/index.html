@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2f4a43">
+<title>The gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>
+:root {
+  --wall: #2f4a43;
+  --wall-deep: #23372f;
+  --wall-lit: #3d5d53;
+  --ghost: #385850;          /* unfaded paint where a frame used to hang */
+  --nail: #9aa59f;
+  --ink: #edf2ee;
+  --ink-soft: #b3c6bd;
+  --frame: #4a3426;
+  --frame-hi: #6d4f3a;
+  --brass: #b98f3a;
+  --brass-hi: #e2c579;
+  --mat: #f1f2ee;
+  --mat-ink: #1e2925;
+  --mat-wrong: #f3d6d0;
+  --card: #f7f8f5;
+  --card-line: #d6dbd6;
+  --card-ink: #1e2925;
+  --card-soft: #5c6b65;
+  --c-red: #c8433a;
+  --c-yellow: #e0b533;
+  --c-green: #3d8b57;
+  --c-blue: #3a71c1;
+  --serif: "Alegreya", ui-serif, "Iowan Old Style", Georgia, serif;
+  --sans: "Alegreya Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--wall-deep);
+  color: var(--ink);
+  font: 400 17px/1.5 var(--sans);
+  padding-inline: max(18px, env(safe-area-inset-left)) max(18px, env(safe-area-inset-right));
+  padding-block: max(20px, env(safe-area-inset-top)) max(28px, env(safe-area-inset-bottom));
+  -webkit-tap-highlight-color: transparent;
+}
+body::before {                /* a picture light washing down the painted wall */
+  content: "";
+  position: fixed; inset: 0; z-index: -1;
+  background: radial-gradient(120% 70% at 50% 0%, var(--wall-lit) 0%, var(--wall) 45%, var(--wall-deep) 100%);
+}
+main, #reward { max-width: 620px; margin: 0 auto; }
+
+h1 {
+  font: 700 clamp(2rem, 9vw, 2.75rem)/1.05 var(--serif);
+  letter-spacing: -0.01em;
+  margin: 8px 0 14px;
+}
+.poem { font: italic 400 1.125rem/1.55 var(--serif); margin: 0; }
+.poem span { display: block; padding-left: 1.2em; text-indent: -1.2em; }
+
+/* The wall: 3 rows of 5, the same shape as the one at home. */
+.wall-wrap { margin: 34px 0 0; scroll-margin-top: 14px; }
+.wall {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr));
+  column-gap: clamp(7px, 2.4vw, 18px);
+  row-gap: clamp(16px, 4.6vw, 30px);
+  padding-top: 8px;
+}
+.slot {
+  position: relative;
+  aspect-ratio: 5 / 6;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.slot::before {               /* the nail */
+  content: "";
+  position: absolute;
+  top: -7px; left: 50%;
+  width: 5px; height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: var(--nail);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .5);
+}
+.ghost {
+  position: absolute; inset: 0;
+  background: var(--ghost);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .04), inset 0 0 12px rgba(0, 0, 0, .12);
+  display: grid; place-items: center;
+}
+.ghost::after { content: "+"; font: 400 1.4rem/1 var(--sans); color: var(--ink-soft); opacity: .45; }
+.frame {
+  position: absolute; inset: 0;
+  padding: 9%;
+  background: linear-gradient(150deg, var(--frame-hi), var(--frame) 60%);
+  box-shadow: 0 9px 14px -7px rgba(0, 0, 0, .6), 0 2px 3px rgba(0, 0, 0, .35), inset 0 0 0 1px rgba(0, 0, 0, .35);
+}
+.mat {
+  height: 100%;
+  display: grid; place-items: center;
+  padding: 3px;
+  background: var(--mat);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, .35);
+  transition: background-color .25s;
+}
+.label {
+  color: var(--mat-ink);
+  font: 700 clamp(.66rem, 2.9vw, .95rem)/1.08 var(--serif);
+  text-align: center;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+.slot.target .ghost, .slot.target .frame { outline: 2px solid var(--mat); outline-offset: 4px; }
+.slot.locked { cursor: default; }
+.slot.locked .frame { background: linear-gradient(150deg, var(--brass-hi), var(--brass) 55%); }
+.slot.wrong .frame { animation: shake .42s; }
+.slot.wrong .mat { background: var(--mat-wrong); }
+.slot:focus-visible { outline: none; }
+.slot:focus-visible .ghost, .slot:focus-visible .frame { outline: 2px solid var(--brass-hi); outline-offset: 4px; }
+.wall.solved .frame { animation: gild .7s ease-out both; animation-delay: calc(var(--i) * 70ms); }
+@keyframes shake { 20%, 60% { transform: translateX(-3px); } 40%, 80% { transform: translateX(3px); } }
+@keyframes gild { 50% { filter: brightness(1.45) saturate(1.2); transform: translateY(-2px); } }
+
+.count { color: var(--ink-soft); margin: 22px 0 0; }
+.status { margin: 6px 0 0; min-height: 1.5em; font-weight: 500; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 16px; }
+
+.btn {
+  font: 700 1.0625rem/1 var(--sans);
+  min-height: 50px;
+  padding: 0 24px;
+  border-radius: 6px;
+  border: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.btn.primary { background: var(--mat); color: var(--mat-ink); box-shadow: 0 3px 0 rgba(0, 0, 0, .25); }
+.btn.primary:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0, 0, 0, .25); }
+.btn.primary:disabled { opacity: .4; cursor: default; }
+.btn.text {
+  background: none; color: var(--ink-soft);
+  font-weight: 500; padding: 0 2px;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.btn:focus-visible { outline: 2px solid var(--brass-hi); outline-offset: 3px; }
+
+/* The list of parks slides up from the bottom. The wall stays tappable above it. */
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  max-width: 660px; margin: 0 auto;
+  max-height: 56vh; max-height: 56dvh;
+  display: flex; flex-direction: column;
+  background: var(--card); color: var(--card-ink);
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -12px 34px rgba(0, 0, 0, .4);
+  padding: 14px max(16px, env(safe-area-inset-left)) max(14px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right));
+  color-scheme: light;
+  animation: rise .22s ease-out;
+}
+@keyframes rise { from { transform: translateY(100%); } }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 10px; }
+.sheet-head h2 { font: 700 1.25rem/1.2 var(--serif); margin: 0; }
+.sheet-head h2:focus { outline: none; }
+.sheet .btn { min-height: 42px; padding: 0 16px; }
+.sheet .btn.done { background: var(--card-ink); color: var(--card); }
+.sheet .btn.text { color: var(--card-soft); }
+.sheet-list {
+  overflow-y: auto; overscroll-behavior: contain;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px; padding: 2px 2px 8px;
+  margin-inline: -2px;
+}
+.park {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px;
+  min-height: 56px;
+  padding: 8px 12px;
+  text-align: left;
+  background: #fff;
+  color: var(--card-ink);
+  border: 1px solid var(--card-line);
+  border-radius: 6px;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.park:active { background: #eef1ec; }
+.park:focus-visible { outline: 2px solid var(--c-blue); outline-offset: 2px; }
+.park-name { font: 700 1.0625rem/1.15 var(--serif); }
+.park-where, .park-at { font-size: .875rem; line-height: 1.25; color: var(--card-soft); }
+.park.hung { background: transparent; border-style: dashed; }
+.park.hung .park-name { color: var(--card-soft); }
+.park.here { border: 2px solid var(--card-ink); padding: 7px 11px; }
+.park-at { color: var(--card-ink); font-weight: 500; }
+.sheet-foot { padding-top: 6px; }
+
+/* The reward: one more picture for the wall. */
+#reward { padding-top: 8px; }
+#reward h1:focus { outline: none; }
+.prize { display: flex; align-items: flex-end; gap: 18px; margin: 30px 0 28px; }
+.prize .slot { width: min(46vw, 210px); flex: none; cursor: default; }
+.prize .mat { background: var(--tile, var(--c-blue)); box-shadow: inset 0 2px 6px rgba(0, 0, 0, .35); }
+.prize .digit { font: 700 clamp(4.5rem, 26vw, 8rem)/1 var(--serif); color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, .18); }
+.plaque { font: 500 1rem/1.3 var(--sans); color: var(--ink-soft); padding-bottom: 6px; }
+.plaque b { display: block; font: 700 1.375rem/1.2 var(--serif); color: var(--ink); }
+#reward .poem { margin-bottom: 26px; }
+.rise { animation: rise-in .6s ease-out both; }
+@keyframes rise-in { from { opacity: 0; transform: translateY(14px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<main id="puzzle">
+  <h1 id="title"></h1>
+  <p class="poem" id="poem"></p>
+  <section class="wall-wrap" id="wall-wrap" aria-label="The wall">
+    <div class="wall" id="wall"></div>
+  </section>
+  <p class="count" id="count"></p>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+  <div class="actions">
+    <button class="btn primary" id="check" type="button" disabled>Check the wall</button>
+    <button class="btn primary" id="see-reward" type="button" hidden>Back to the reward</button>
+    <button class="btn text" id="clear" type="button" hidden>Take them all down</button>
+  </div>
+</main>
+
+<section id="reward" hidden>
+  <h1 id="r-title" tabindex="-1"></h1>
+  <div class="prize" id="r-prize">
+    <div class="slot"><div class="frame"><div class="mat"><span class="digit" id="r-digit"></span></div></div></div>
+    <p class="plaque" id="r-plaque"></p>
+  </div>
+  <p class="poem" id="r-lines"></p>
+  <button class="btn text" id="r-back" type="button">Look at the wall again</button>
+</section>
+
+<div class="sheet" id="sheet" role="dialog" aria-labelledby="sheet-title" hidden>
+  <div class="sheet-head">
+    <h2 id="sheet-title" tabindex="-1"></h2>
+    <button class="btn done" id="sheet-done" type="button">Done</button>
+  </div>
+  <div class="sheet-list" id="sheet-list"></div>
+  <div class="sheet-foot" id="sheet-foot" hidden>
+    <button class="btn text" id="take-down" type="button">Take this one down</button>
+  </div>
+</div>
+
+<script>const PUZZLE = {"title":"The gallery","poem":["Fifteen parks share a wall in a place you’ve been,","in three rows of five, every summit and scene.","Their labels fell off, and they’ve all landed here:","hang each by its picture, and the next step is clear."],"rows":3,"cols":5,"rowNames":["top","middle","bottom"],"parks":[{"id":"arches","name":"Arches","where":"Utah"},{"id":"bryce-canyon","name":"Bryce Canyon","where":"Utah"},{"id":"canyonlands","name":"Canyonlands","short":"Canyon­lands","where":"Utah"},{"id":"capitol-reef","name":"Capitol Reef","where":"Utah"},{"id":"crater-lake","name":"Crater Lake","where":"Oregon"},{"id":"glacier-bay","name":"Glacier Bay","where":"Alaska"},{"id":"hawai-i-volcanoes","name":"Hawaiʻi Volcanoes","short":"Hawaiʻi Volca­noes","where":"Hawaii"},{"id":"joshua-tree","name":"Joshua Tree","where":"California"},{"id":"mount-rainier","name":"Mount Rainier","where":"Washington"},{"id":"north-cascades","name":"North Cascades","where":"Washington"},{"id":"olympic","name":"Olympic","where":"Washington"},{"id":"redwood","name":"Redwood","where":"California"},{"id":"yellowstone","name":"Yellowstone","short":"Yellow­stone","where":"Wyoming"},{"id":"yosemite","name":"Yosemite","where":"California"},{"id":"zion","name":"Zion","where":"Utah"}],"iterations":60000,"salt":"pPQdJ4mE+3oj+PKl6saBow==","rowHash":["bda753f5c0e59756f0580001c5f9b99cf88157cee5a8ce2815b3d5146b7238b0","5707cde059415cc5f4beef92c7e131e974465477bf9e1aaf5d0538a0ea913e58","6c10b55aaf0d7fd8d037c81aaf88f58a2fcaeb23f25d61bb7b2d864b225a34ac"],"reward":{"iv":"BIjoZM4I/50G8TBT","ct":"GrMCvPGeKFx/4v6VYADfIjCZSTYhcDH/WUQYAphiCGQdfKTDIG89Ftcn5NzQFkmaF/v0NTBXMenN7N1QfFeHXzir+cycWMnSBC4CTisgxHQTLRLaDfrp4qbvjn6GGG8mkoMyGoz9RXdAzTzah515ZsZrCqq66P4PV+5xTx/EYzV4F0ZCccoVN4uQyK392kXKG+yI2QNerpTOLrsm/kHF6NF9l1y3CFaZ/qSGKEnjrjSY5uhXrSmtraE4iOqLIAZPWUKFqW2dBtrIBLDPztApkACMspDaXHYLMbiQiL2aLAnNqYgHx2AxYIC/jCKoU2drEfcBYbhWtoBWDg2JsuLPG7x6ivyuqQpCICLj1wqbA+/k9/u3IsgtzHX3Cj2fJ0TlVWXH3MOWpFvn4Krsmigp"}};</script>
+<script>
+(() => {
+  "use strict";
+  const P = PUZZLE;
+  const N = P.rows * P.cols;
+  const $ = (id) => document.getElementById(id);
+  const byId = new Map(P.parks.map((p) => [p.id, p]));
+  const enc = new TextEncoder();
+  const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  const hex = (buf) => Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, "0")).join("");
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const STORE = "gallery:" + P.salt.slice(0, 12);
+
+  let place = Array(N).fill(null); // park id hanging in each frame, reading order
+  let locked = Array(P.rows).fill(false);
+  let solved = null;               // the decrypted reward, once all rows are right
+  let target = null;               // the frame the park list is choosing for
+  let busy = false;
+  let clearArmed = 0;
+
+  const rowOf = (i) => Math.floor(i / P.cols);
+  const rowIds = (r) => place.slice(r * P.cols, (r + 1) * P.cols);
+  const where = (i) => P.rowNames[rowOf(i)] + " row, frame " + (i % P.cols + 1);
+  const rowsPhrase = (rs) => {
+    const names = rs.map((r) => P.rowNames[r]);
+    const list = names.length === 1 ? names[0] : names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
+    return "the " + list + " row" + (rs.length > 1 ? "s" : "");
+  };
+
+  // Progress survives a refresh or a locked phone.
+  function save() {
+    try { localStorage.setItem(STORE, JSON.stringify({ place, locked })); } catch (e) {}
+  }
+  function load() {
+    try {
+      const s = JSON.parse(localStorage.getItem(STORE) || "null");
+      if (s && s.place.length === N && s.place.every((id) => id === null || byId.has(id))) {
+        place = s.place;
+        locked = s.locked;
+      }
+    } catch (e) {}
+  }
+
+  // The page never holds the answer: only salted hashes of each row and a
+  // reward encrypted with the whole wall.
+  async function derive(text) {
+    const base = await crypto.subtle.importKey("raw", enc.encode(text), "PBKDF2", false, ["deriveBits"]);
+    return crypto.subtle.deriveBits({ name: "PBKDF2", salt: b64(P.salt), iterations: P.iterations, hash: "SHA-256" }, base, 256);
+  }
+  async function rowIsRight(r) {
+    return hex(await derive("row" + r + ":" + rowIds(r).join(","))) === P.rowHash[r];
+  }
+  async function openReward() {
+    const bits = await derive("all:" + place.join(","));
+    const key = await crypto.subtle.importKey("raw", bits, "AES-GCM", false, ["decrypt"]);
+    const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(P.reward.iv) }, key, b64(P.reward.ct));
+    return JSON.parse(new TextDecoder().decode(plain));
+  }
+
+  // ---- The wall ----
+  const wall = $("wall");
+  wall.style.setProperty("--cols", P.cols);
+  const slots = [];
+  for (let i = 0; i < N; i++) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "slot";
+    b.style.setProperty("--i", i);
+    b.addEventListener("click", () => { if (!locked[rowOf(i)]) openSheet(i); });
+    wall.appendChild(b);
+    slots.push(b);
+  }
+
+  function lines(el, list) {
+    el.replaceChildren(...list.map((t) => Object.assign(document.createElement("span"), { textContent: t })));
+  }
+
+  function render() {
+    slots.forEach((b, i) => {
+      const id = place[i];
+      const isLocked = locked[rowOf(i)];
+      b.classList.toggle("locked", isLocked);
+      b.classList.toggle("target", i === target);
+      b.setAttribute("aria-disabled", isLocked);
+      b.setAttribute("aria-label", cap(where(i)) + ": " + (id ? byId.get(id).name : "empty") + (isLocked ? ", correct" : ""));
+      const key = (id || "") + (isLocked ? "!" : "");
+      if (b.dataset.key === key) return;
+      b.dataset.key = key;
+      if (!id) {
+        b.replaceChildren(Object.assign(document.createElement("span"), { className: "ghost" }));
+      } else {
+        const p = byId.get(id);
+        const frame = Object.assign(document.createElement("span"), { className: "frame" });
+        const mat = Object.assign(document.createElement("span"), { className: "mat" });
+        mat.appendChild(Object.assign(document.createElement("span"), { className: "label", textContent: p.short || p.name }));
+        frame.appendChild(mat);
+        b.replaceChildren(frame);
+      }
+    });
+    const hung = place.filter(Boolean).length;
+    $("count").textContent = solved ? "Every row is right."
+      : hung === 0 ? "Tap a frame to hang a park in it."
+      : hung === N ? "All " + N + " are hung. Check the wall when you’re ready."
+      : hung + " of " + N + " hung.";
+    const checkable = locked.some((l, r) => !l && rowIds(r).every(Boolean));
+    $("check").disabled = busy || !checkable;
+    $("check").hidden = !!solved;
+    $("see-reward").hidden = !solved;
+    $("clear").hidden = !!solved || !place.some((id, i) => id && !locked[rowOf(i)]);
+  }
+
+  function say(text) { $("status").textContent = text; }
+
+  // ---- The park list ----
+  const sheet = $("sheet");
+
+  function openSheet(i) {
+    const wasOpen = !sheet.hidden;
+    target = i;
+    renderSheet();
+    sheet.hidden = false;
+    render();
+    // Leave room to scroll the wall up above the sheet.
+    document.body.style.paddingBottom = sheet.offsetHeight + 24 + "px";
+    if (!wasOpen) {
+      $("wall-wrap").scrollIntoView({ block: "start", behavior: reduced ? "auto" : "smooth" });
+      $("sheet-title").focus({ preventScroll: true });
+    }
+  }
+
+  function closeSheet() {
+    if (sheet.hidden) return;
+    const back = slots[target];
+    sheet.hidden = true;
+    target = null;
+    document.body.style.paddingBottom = "";
+    render();
+    if (back) back.focus({ preventScroll: true });
+  }
+
+  function renderSheet() {
+    $("sheet-title").textContent = cap(where(target));
+    const lockedIds = new Set(place.filter((id, i) => id && locked[rowOf(i)]));
+    const items = P.parks.filter((p) => !lockedIds.has(p.id)).map((p) => {
+      const at = place.indexOf(p.id);
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "park" + (at === target ? " here" : at >= 0 ? " hung" : "");
+      b.appendChild(Object.assign(document.createElement("span"), { className: "park-name", textContent: p.name }));
+      if (p.where) b.appendChild(Object.assign(document.createElement("span"), { className: "park-where", textContent: p.where }));
+      if (at >= 0) b.appendChild(Object.assign(document.createElement("span"), {
+        className: "park-at", textContent: at === target ? "In this frame" : "In the " + where(at),
+      }));
+      b.addEventListener("click", () => hang(p.id));
+      return b;
+    });
+    $("sheet-list").replaceChildren(...items);
+    $("sheet-foot").hidden = !place[target];
+  }
+
+  function nextEmpty(from) {
+    for (let k = 1; k <= N; k++) {
+      const j = (from + k) % N;
+      if (!place[j] && !locked[rowOf(j)]) return j;
+    }
+    return null;
+  }
+
+  function hang(id) {
+    const i = target;
+    const was = place[i];
+    const from = place.indexOf(id);
+    if (from !== i) {
+      place[i] = id;
+      if (from >= 0) place[from] = was; // swap the two frames
+    }
+    changed();
+    // Filling an empty frame moves on to the next empty one, so a team
+    // standing at the wall can go left to right without closing the list.
+    const next = was ? null : nextEmpty(i);
+    if (next !== null) openSheet(next); else closeSheet();
+  }
+
+  function takeDown() {
+    place[target] = null;
+    changed();
+    renderSheet();
+  }
+
+  function changed() {
+    save();
+    say("");
+    render();
+  }
+
+  // ---- Checking ----
+  async function check() {
+    if (busy) return;
+    closeSheet();
+    busy = true;
+    $("check").textContent = "Checking…";
+    render();
+    const right = [], wrong = [];
+    try {
+      for (let r = 0; r < P.rows; r++) {
+        if (locked[r] || !rowIds(r).every(Boolean)) continue;
+        (await rowIsRight(r) ? right : wrong).push(r);
+      }
+    } catch (e) {
+      busy = false;
+      $("check").textContent = "Check the wall";
+      render();
+      say("This page can’t check answers here. Open it over https.");
+      return;
+    }
+    right.forEach((r) => { locked[r] = true; });
+    busy = false;
+    $("check").textContent = "Check the wall";
+    save();
+    render();
+
+    if (locked.every(Boolean)) { say("Every row is right."); return solve(false); }
+    const msg = [];
+    if (right.length) msg.push(cap(rowsPhrase(right)) + (right.length > 1 ? " are" : " is") + " right.");
+    if (wrong.length) msg.push(cap(rowsPhrase(wrong)) + (wrong.length > 1 ? " aren’t" : " isn’t") + " right yet.");
+    say(msg.join(" "));
+    if (wrong.length) {
+      const bad = slots.filter((b, i) => wrong.includes(rowOf(i)));
+      bad.forEach((b) => b.classList.add("wrong"));
+      if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
+      setTimeout(() => bad.forEach((b) => b.classList.remove("wrong")), 900);
+    }
+  }
+
+  async function solve(restoring) {
+    try {
+      solved = await openReward();
+    } catch (e) {
+      say("Every row checks out, but the reward wouldn’t open. Text the host.");
+      return;
+    }
+    render();
+    if (!restoring && !reduced) {
+      wall.classList.add("solved");
+      await wait(1500);
+    }
+    showReward(true);
+  }
+
+  function showReward(animate) {
+    const R = solved;
+    $("r-title").textContent = R.title;
+    $("r-prize").hidden = !R.digit;
+    if (R.digit) {
+      const c = R.digit.color;
+      document.documentElement.style.setProperty("--tile", /^[a-z]+$/.test(c) ? "var(--c-" + c + ")" : c);
+      $("r-digit").textContent = R.digit.value;
+      $("r-plaque").replaceChildren(
+        Object.assign(document.createElement("b"), { textContent: cap(c) }),
+        document.createTextNode("Write it in the " + c + " box."),
+      );
+    }
+    lines($("r-lines"), R.lines || []);
+    $("puzzle").hidden = true;
+    const view = $("reward");
+    view.hidden = false;
+    view.classList.toggle("rise", animate && !reduced);
+    window.scrollTo(0, 0);
+    $("r-title").focus({ preventScroll: true });
+  }
+
+  // ---- Wiring ----
+  $("title").textContent = P.title;
+  document.title = P.title;
+  lines($("poem"), P.poem);
+  $("check").addEventListener("click", check);
+  $("sheet-done").addEventListener("click", closeSheet);
+  $("take-down").addEventListener("click", takeDown);
+  $("see-reward").addEventListener("click", () => showReward(false));
+  $("r-back").addEventListener("click", () => {
+    $("reward").hidden = true;
+    $("puzzle").hidden = false;
+    window.scrollTo(0, 0);
+  });
+  $("clear").addEventListener("click", () => {
+    const btn = $("clear");
+    if (Date.now() - clearArmed > 3000) {
+      clearArmed = Date.now();
+      btn.textContent = "Tap again to take them all down";
+      setTimeout(() => { btn.textContent = "Take them all down"; }, 3000);
+      return;
+    }
+    clearArmed = 0;
+    btn.textContent = "Take them all down";
+    place = place.map((id, i) => (locked[rowOf(i)] ? id : null));
+    changed();
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
+
+  load();
+  render();
+  if (!window.crypto || !crypto.subtle) say("This page can’t check answers here. Open it over https.");
+  else if (locked.every(Boolean)) solve(true);
+})();
+</script>
+</body>
+</html>

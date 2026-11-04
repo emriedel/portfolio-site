@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#2f4a43">
-<title>The gallery</title>
+<title>The Housewarming Hunt</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700&display=swap">
@@ -15,7 +15,6 @@
   --wall-deep: #23372f;
   --wall-lit: #3d5d53;
   --ghost: #385850;          /* unfaded paint where a frame used to hang */
-  --nail: #9aa59f;
   --ink: #edf2ee;
   --ink-soft: #b3c6bd;
   --frame: #4a3426;
@@ -63,8 +62,8 @@ h1 {
   letter-spacing: -0.01em;
   margin: 8px 0 14px;
 }
-.poem { font: italic 400 1.125rem/1.55 var(--serif); margin: 0; }
-.poem span { display: block; padding-left: 1.2em; text-indent: -1.2em; text-wrap: balance; }
+.poem { font: italic 400 1.125rem/1.55 var(--serif); margin: 12px 0 0; text-align: center; }
+.poem span { display: block; text-wrap: balance; }
 
 /* The wall: 3 rows of 5, with some columns hung lower, as at home. */
 .wall-wrap { margin: 34px 0 0; }
@@ -88,16 +87,6 @@ h1 {
   font: inherit;
   cursor: pointer;
   touch-action: manipulation;
-}
-.slot::before {               /* the nail */
-  content: "";
-  position: absolute;
-  top: -7px; left: 50%;
-  width: 5px; height: 5px;
-  margin-left: -2.5px;
-  border-radius: 50%;
-  background: var(--nail);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .5);
 }
 .ghost {
   position: absolute; inset: 0;
@@ -140,10 +129,10 @@ h1 {
 @keyframes gild { 50% { filter: brightness(1.45) saturate(1.2); transform: translateY(-2px); } }
 @keyframes shake { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
 
-.count { color: var(--ink-soft); margin: 22px 0 0; }
-.status { margin: 6px 0 0; min-height: 1.5em; font-weight: 700; font-size: 1.125rem; }
+.count { color: var(--ink-soft); margin: 22px 0 0; text-align: center; }
+.status { margin: 6px 0 0; min-height: 1.5em; font-weight: 700; font-size: 1.125rem; text-align: center; }
 .status.nope { animation: shake .42s; }
-.actions { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+.actions { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 14px; }
 
 .btn {
   font: 700 1.0625rem/1 var(--sans);
@@ -213,21 +202,19 @@ h1 {
   touch-action: manipulation;
 }
 .park:active { background: #eef1ec; }
-.park:disabled { background: transparent; border-style: dashed; color: var(--card-soft); opacity: .55; cursor: default; }
+.park.elsewhere { background: transparent; border-style: dashed; color: var(--card-soft); }
 .park.here { background: var(--card-ink); border-color: var(--card-ink); color: var(--card); }
 .park.here svg.icon { width: 18px; height: 18px; stroke-width: 2.4; }
 .park:focus-visible { outline: 2px solid var(--c-blue); outline-offset: 2px; }
 
 /* The reward: one more picture for the wall. */
-#reward { padding-top: 8px; }
+#reward { padding-top: 8px; text-align: center; }
 #reward h1:focus { outline: none; }
-.prize { display: flex; align-items: flex-end; gap: 18px; margin: 30px 0 28px; }
-.prize .slot { width: min(46vw, 210px); flex: none; cursor: default; }
+.prize { display: flex; justify-content: center; margin: 30px 0 28px; }
+.prize .slot { width: min(50vw, 220px); flex: none; cursor: default; }
 .prize .mat { background: var(--tile, var(--c-blue)); box-shadow: inset 0 2px 6px rgba(0, 0, 0, .35); }
-.prize .digit { font: 700 clamp(4.5rem, 26vw, 8rem)/1 var(--serif); color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, .18); }
-.plaque { font: 500 1rem/1.3 var(--sans); color: var(--ink-soft); padding-bottom: 6px; margin: 0; }
-.plaque b { display: block; font: 700 1.375rem/1.2 var(--serif); color: var(--ink); }
-#reward .poem { margin-bottom: 26px; }
+.prize .digit { font: 700 clamp(4.5rem, 28vw, 8.5rem)/1 var(--serif); color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, .18); }
+#reward .poem { margin: 0 0 26px; }
 /* Slide only, no fade: if the animation never runs, the reward still shows. */
 .rise { animation: rise-in .5s ease-out; }
 @keyframes rise-in { from { transform: translateY(16px); } }
@@ -239,7 +226,6 @@ h1 {
 </head>
 <body>
 <main id="puzzle">
-  <h1 id="title"></h1>
   <p class="poem" id="poem"></p>
   <section class="wall-wrap" aria-label="The wall">
     <div class="wall" id="wall"></div>
@@ -258,11 +244,10 @@ h1 {
 
 <section id="reward" hidden>
   <h1 id="r-title" tabindex="-1"></h1>
-  <div class="prize" id="r-prize">
+  <div class="prize" id="r-prize" role="img">
     <div class="slot"><div class="frame"><div class="mat"><span class="digit" id="r-digit"></span></div></div></div>
-    <p class="plaque" id="r-plaque"></p>
   </div>
-  <p class="poem" id="r-lines"></p>
+  <p class="poem" id="r-lines" hidden></p>
   <button class="btn text" id="r-back" type="button">Back</button>
 </section>
 
@@ -274,7 +259,7 @@ h1 {
   <div class="sheet-list" id="sheet-list"></div>
 </div>
 
-<script>const PUZZLE = {"title":"The gallery","poem":["Fifteen parks share a wall in a place you’ve been,","in three rows of five, every summit and scene.","Their labels fell off, and they’ve all landed here:","hang each by its picture, and the next step is clear."],"rows":3,"cols":5,"rowNames":["top","middle","bottom"],"drop":[0,0.5,0,0.5,0],"parks":[{"id":"arches","name":"Arches"},{"id":"bryce-canyon","name":"Bryce Canyon"},{"id":"canyonlands","name":"Canyonlands","short":"Canyon­lands"},{"id":"capitol-reef","name":"Capitol Reef"},{"id":"crater-lake","name":"Crater Lake"},{"id":"glacier-bay","name":"Glacier Bay"},{"id":"hawai-i-volcanoes","name":"Hawai‘i Volcanoes","short":"Hawai‘i Volca­noes"},{"id":"joshua-tree","name":"Joshua Tree"},{"id":"mount-rainier","name":"Mount Rainier"},{"id":"north-cascades","name":"North Cascades"},{"id":"olympic","name":"Olympic"},{"id":"redwood","name":"Redwood"},{"id":"yellowstone","name":"Yellowstone","short":"Yellow­stone"},{"id":"yosemite","name":"Yosemite"},{"id":"zion","name":"Zion"}],"iterations":5000,"salt":"8Zb0MeNmLGVryamNQLtQRA==","frameHash":["dbb5339f505da054c3a2584b3b527c41fee9333cfe05299d23310b736570860f","b00c381db00bc697acabd491e93fcc441d595991c8a9f860456e33f45cf16109","966154bf04c4e88d7bcde94ddf88bf64e3a539cb3960f8d188b6b24ccac312b7","57d3fefb89ea521d2a96ca83725f14157fb190cc1969d9d703dbe8f382d59c22","50123bd4ddc8588606131056cef89214002721d8ab0985ad5ee9d79c1a6fc596","bea93727c3ca9228f9b38ad321d7790256abd746ceeac9eb2d62f95e2e699e74","5627e83e8c9918348f8c018a3b7c9507fba966d819e19ab4fb0204331dd3203b","d13c4fa914dfbb74a181d8d5d6584562a10074c24b07f383549e62a7eaa73b6b","cf3d8fa31fc078e545b9fa011658c72ff30c80180f46f98f1085fc591085ced2","6f9417fcb517d72555f9825d48487a8235d7c74ce2cbf8ac61af18628018e8a0","8161b36821a46c70ff267d4aa9007b5c4542fb5c646eb178cb83e6f56ee2798e","d0d5ca6ad43679ffe7245e1b4ba529909bb0938a08de62e064331912120f7962","7f8dcd4fe6c878f1ee780baf38414e711c04d4b19366649e6cc348d548f1880d","1763c3561011d81e2eef80d1b2d598dfdc03000226ba28e51b018daa5f1fa409","b25c36d66b7ab39569f29c9d505af886fee6a30e43d3f1a4ed86275564b621e4"],"reward":{"iv":"Du8gqg+595sbQyGk","ct":"SAgen6lsiHSyyakrrMGVHYrgG5H8d3+wXQSfx01KdeTSOCdSCoU5EQniWv7r3UBGnzzlEdCLeriZnqy6/5cTVRZIN0OVGDlzld6B6UWG86Hcowr6THEwddkP+8UOpYpYBzyf/f7fgNNW3oDnAVeTNgSBS09+d28HNDwPoQR+CTQUg16yxX2yWJSYNR3qV+vIbthkeu5KvJA3j0RdHkRcnINlOumPxeQWB7hEPMfWNMHtyBCRcC+ODZh5f6vBMfVGtgDWHU3Curm2vHjDog7t9jzYCcDKqjSyCrk59+zEO2G5BNIIxSMxSm16PcQ2YTWZj16OesTkGqtsLCkL6X6x0w1J5LQe8w8th2055ymHkcZ09v7gK2np5aQ3ZibOhCdzP7GUZN5LsWb6btrJA1MI"}};</script>
+<script>const PUZZLE = {"title":"The Housewarming Hunt","poem":["Fifteen parks share a wall in a place you’ve been,","in three rows of five, every summit and scene.","Their labels fell off, and they’ve all landed here:","hang each by its picture, and the next step is clear."],"rows":3,"cols":5,"rowNames":["top","middle","bottom"],"drop":[0,0.5,0,0.5,0],"parks":[{"id":"arches","name":"Arches"},{"id":"bryce-canyon","name":"Bryce Canyon"},{"id":"canyonlands","name":"Canyonlands","short":"Canyon­lands"},{"id":"capitol-reef","name":"Capitol Reef"},{"id":"crater-lake","name":"Crater Lake"},{"id":"glacier-bay","name":"Glacier Bay"},{"id":"hawai-i-volcanoes","name":"Hawai‘i Volcanoes","short":"Hawai‘i Volca­noes"},{"id":"joshua-tree","name":"Joshua Tree"},{"id":"mount-rainier","name":"Mount Rainier"},{"id":"north-cascades","name":"North Cascades"},{"id":"olympic","name":"Olympic"},{"id":"redwood","name":"Redwood"},{"id":"yellowstone","name":"Yellowstone","short":"Yellow­stone"},{"id":"yosemite","name":"Yosemite"},{"id":"zion","name":"Zion"}],"iterations":5000,"salt":"W8wL5G0zDFzm4tnK2n5+VQ==","frameHash":["02cfebc7fecbd931d948f8e4abd01f7ce06e514f595c8a8f14469795bf6b4bf7","b708dea31275a1cd3ac51c0b7c1a3faa978a031f55b65643aa85e547b2c4d39a","3ef178fc4f4d080e1279ed5991a573af2df20e7116a3edcf02da3ccb6d996437","cf48444fb3bcca86caa76c1a6510920d579257c49ee17dba33bb48aac9c1e57a","b64ff2d0a3695f791e1fbfbd0e57c54817a46cda84222d2097407f0879c31237","7fb6e3490954bb4584b073dddc9adfd92be44c0ea1b5ff9f04bac06277f3e181","8b192a9e9eb1d4c3ab90a2138d27d69c7fec60850e4716ac00bb23ae85622fd7","ffa502276aa3383b244d2aefaf71c169b4aa582a136df191cdd0de1252efcabe","d6e39126cc2f53c9712ede369b5680f215bfdfde2a3c29aa4a3b95b2aabedae5","bf0a65ab1f00b74ca4a1455fac6bfdd58394b0746924c9b72995d7b3cb211645","03845d970d40a05582ca49aba0c586453ffcad10b81630687f158910b5c4c427","d38e602e7cbcab58db4e31ebe2cc6e887c0817142dfca9ce8b2d6ba8b1b27e09","8bffce2e8a8e5c9e4ef5d3ebdae59650b10a63e452200e479b934d54967693fa","c1e2b19004c6013e18e96a1274c035ebf05f49e5820cd2e743ca2f8e772adea4","d37bb454991bbee2fc094dee20d08d66cdc70daca757bc4b87960fbd87d45bb4"],"reward":{"iv":"yRU+CSmd5mE0ymXC","ct":"GSf0VugzFw9F+ZiQLY8Q7bMo+0d+6Zy1D8yPLaFb2BR4K/Lkis/goof7KZK70G2YLRq1BzyDhkcBp1Bc50zxuMuuVETTEFrcs9j/XRvAniUdvf/Inw=="}};</script>
 <script>
 (() => {
   "use strict";
@@ -445,7 +430,8 @@ h1 {
         b.appendChild(icon("M6 6l12 12M18 6L6 18"));
         b.addEventListener("click", remove);
       } else {
-        b.disabled = place.includes(p.id); // already in another frame
+        // A park in another frame still works: picking it moves it here.
+        b.classList.toggle("elsewhere", place.includes(p.id));
         b.addEventListener("click", () => choose(p.id));
       }
       return b;
@@ -464,7 +450,9 @@ h1 {
   function choose(id) {
     const i = target;
     const was = place[i];
-    place[i] = id; // a park it replaces goes back on the list
+    const from = place.indexOf(id);
+    if (from >= 0) place[from] = null; // moved from another frame
+    place[i] = id;                     // a park it replaces goes back on the list
     changed();
     // Filling an empty frame moves on to the next empty one, so a team
     // standing at the wall can go left to right without closing the list.
@@ -530,8 +518,10 @@ h1 {
       const c = R.digit.color;
       document.documentElement.style.setProperty("--tile", /^[a-z]+$/.test(c) ? "var(--c-" + c + ")" : c);
       $("r-digit").textContent = R.digit.value;
-      $("r-plaque").replaceChildren(el("b", null, cap(c)), document.createTextNode("Write it in the " + c + " box."));
+      $("r-prize").setAttribute("aria-label", cap(c) + ": " + R.digit.value);
     }
+    // Optional text under the picture (reward.lines in the config).
+    $("r-lines").hidden = !(R.lines && R.lines.length);
     $("r-lines").replaceChildren(...(R.lines || []).map((t) => el("span", null, t)));
     $("puzzle").hidden = true;
     const view = $("reward");
@@ -542,7 +532,6 @@ h1 {
   }
 
   // ---- Wiring ----
-  $("title").textContent = P.title;
   document.title = P.title;
   $("poem").replaceChildren(...P.poem.map((t) => el("span", null, t)));
   $("check").addEventListener("click", submit);

@@ -14,7 +14,6 @@
   --wall: #2f4a43;
   --wall-deep: #23372f;
   --wall-lit: #3d5d53;
-  --ghost: #385850;          /* unfaded paint where a frame used to hang */
   --ink: #edf2ee;
   --ink-soft: #b3c6bd;
   --frame: #4a3426;
@@ -54,7 +53,7 @@ body::before {                /* a picture light washing down the painted wall *
   position: fixed; inset: 0; z-index: -1;
   background: radial-gradient(120% 70% at 50% 0%, var(--wall-lit) 0%, var(--wall) 45%, var(--wall-deep) 100%);
 }
-main, #reward { max-width: 620px; margin: 0 auto; }
+main, #reward { max-width: 620px; margin: 0 auto; padding-top: clamp(28px, 7vh, 64px); }
 svg.icon { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 
 h1 {
@@ -62,7 +61,7 @@ h1 {
   letter-spacing: -0.01em;
   margin: 8px 0 14px;
 }
-.poem { font: italic 400 1.125rem/1.55 var(--serif); margin: 12px 0 0; text-align: center; }
+.poem { font: italic 400 1.375rem/1.5 var(--serif); margin: 0; text-align: center; }
 .poem span { display: block; text-wrap: balance; }
 
 /* The wall: 3 rows of 5, with some columns hung lower, as at home. */
@@ -88,13 +87,6 @@ h1 {
   cursor: pointer;
   touch-action: manipulation;
 }
-.ghost {
-  position: absolute; inset: 0;
-  background: var(--ghost);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .04), inset 0 0 12px rgba(0, 0, 0, .12);
-  display: grid; place-items: center;
-}
-.ghost::after { content: "+"; font: 400 1.4rem/1 var(--sans); color: var(--ink-soft); opacity: .45; }
 .frame {
   position: absolute; inset: 0;
   padding: 9%;
@@ -108,6 +100,8 @@ h1 {
   background: var(--mat);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, .35);
 }
+.frame.empty .mat { background: #c4ccc6; box-shadow: inset 0 1px 4px rgba(0, 0, 0, .4); }
+.frame.empty .mat::after { content: "+"; font: 400 1.4rem/1 var(--sans); color: #6c7a73; }
 .label {
   color: var(--mat-ink);
   font: 700 clamp(.66rem, 2.9vw, .95rem)/1.08 var(--serif);
@@ -117,9 +111,9 @@ h1 {
   -webkit-hyphens: manual;
   hyphens: manual;
 }
-.slot.target .ghost, .slot.target .frame { outline: 2px solid var(--mat); outline-offset: 4px; }
+.slot.target .frame { outline: 2px solid var(--mat); outline-offset: 4px; }
 .slot:focus-visible { outline: none; }
-.slot:focus-visible .ghost, .slot:focus-visible .frame { outline: 2px solid var(--brass-hi); outline-offset: 4px; }
+.slot:focus-visible .frame { outline: 2px solid var(--brass-hi); outline-offset: 4px; }
 .wall.solved .slot { cursor: default; }
 .wall.solved .frame {
   background: linear-gradient(150deg, var(--brass-hi), var(--brass) 55%);
@@ -129,8 +123,7 @@ h1 {
 @keyframes gild { 50% { filter: brightness(1.45) saturate(1.2); transform: translateY(-2px); } }
 @keyframes shake { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
 
-.count { color: var(--ink-soft); margin: 22px 0 0; text-align: center; }
-.status { margin: 6px 0 0; min-height: 1.5em; font-weight: 700; font-size: 1.125rem; text-align: center; }
+.status { margin: 22px 0 0; min-height: 1.5em; font-weight: 700; font-size: 1.125rem; text-align: center; }
 .status.nope { animation: shake .42s; }
 .actions { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 14px; }
 
@@ -178,9 +171,8 @@ h1 {
   animation: rise .22s ease-out;
 }
 @keyframes rise { from { transform: translateY(100%); } }
-.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 10px; }
-.sheet-head h2 { font: 700 1.25rem/1.2 var(--serif); margin: 0; }
-.sheet-head h2:focus { outline: none; }
+.sheet:focus { outline: none; }
+.sheet-head { display: flex; justify-content: flex-end; padding-bottom: 10px; }
 .sheet .btn { min-height: 42px; padding: 0 16px; background: var(--card-ink); color: var(--card); }
 .sheet-list {
   overflow-y: auto; overscroll-behavior: contain;
@@ -208,7 +200,7 @@ h1 {
 .park:focus-visible { outline: 2px solid var(--c-blue); outline-offset: 2px; }
 
 /* The reward: one more picture for the wall. */
-#reward { padding-top: 8px; text-align: center; }
+#reward { text-align: center; }
 #reward h1:focus { outline: none; }
 .prize { display: flex; justify-content: center; margin: 30px 0 28px; }
 .prize .slot { width: min(50vw, 220px); flex: none; cursor: default; }
@@ -230,7 +222,6 @@ h1 {
   <section class="wall-wrap" aria-label="The wall">
     <div class="wall" id="wall"></div>
   </section>
-  <p class="count" id="count"></p>
   <p class="status" id="status" role="status" aria-live="polite"></p>
   <div class="actions">
     <button class="btn primary" id="check" type="button" disabled>Submit</button>
@@ -251,15 +242,14 @@ h1 {
   <button class="btn text" id="r-back" type="button">Back</button>
 </section>
 
-<div class="sheet" id="sheet" role="dialog" aria-labelledby="sheet-title" hidden>
+<div class="sheet" id="sheet" role="dialog" aria-label="Choose a park" tabindex="-1" hidden>
   <div class="sheet-head">
-    <h2 id="sheet-title" tabindex="-1"></h2>
     <button class="btn" id="sheet-done" type="button">Done</button>
   </div>
   <div class="sheet-list" id="sheet-list"></div>
 </div>
 
-<script>const PUZZLE = {"title":"The Housewarming Hunt","poem":["Fifteen parks share a wall in a place you’ve been,","in three rows of five, every summit and scene.","Their labels fell off, and they’ve all landed here:","hang each by its picture, and the next step is clear."],"rows":3,"cols":5,"rowNames":["top","middle","bottom"],"drop":[0,0.5,0,0.5,0],"parks":[{"id":"arches","name":"Arches"},{"id":"bryce-canyon","name":"Bryce Canyon"},{"id":"canyonlands","name":"Canyonlands","short":"Canyon­lands"},{"id":"capitol-reef","name":"Capitol Reef"},{"id":"crater-lake","name":"Crater Lake"},{"id":"glacier-bay","name":"Glacier Bay"},{"id":"hawai-i-volcanoes","name":"Hawai‘i Volcanoes","short":"Hawai‘i Volca­noes"},{"id":"joshua-tree","name":"Joshua Tree"},{"id":"mount-rainier","name":"Mount Rainier"},{"id":"north-cascades","name":"North Cascades"},{"id":"olympic","name":"Olympic"},{"id":"redwood","name":"Redwood"},{"id":"yellowstone","name":"Yellowstone","short":"Yellow­stone"},{"id":"yosemite","name":"Yosemite"},{"id":"zion","name":"Zion"}],"iterations":5000,"salt":"W8wL5G0zDFzm4tnK2n5+VQ==","frameHash":["02cfebc7fecbd931d948f8e4abd01f7ce06e514f595c8a8f14469795bf6b4bf7","b708dea31275a1cd3ac51c0b7c1a3faa978a031f55b65643aa85e547b2c4d39a","3ef178fc4f4d080e1279ed5991a573af2df20e7116a3edcf02da3ccb6d996437","cf48444fb3bcca86caa76c1a6510920d579257c49ee17dba33bb48aac9c1e57a","b64ff2d0a3695f791e1fbfbd0e57c54817a46cda84222d2097407f0879c31237","7fb6e3490954bb4584b073dddc9adfd92be44c0ea1b5ff9f04bac06277f3e181","8b192a9e9eb1d4c3ab90a2138d27d69c7fec60850e4716ac00bb23ae85622fd7","ffa502276aa3383b244d2aefaf71c169b4aa582a136df191cdd0de1252efcabe","d6e39126cc2f53c9712ede369b5680f215bfdfde2a3c29aa4a3b95b2aabedae5","bf0a65ab1f00b74ca4a1455fac6bfdd58394b0746924c9b72995d7b3cb211645","03845d970d40a05582ca49aba0c586453ffcad10b81630687f158910b5c4c427","d38e602e7cbcab58db4e31ebe2cc6e887c0817142dfca9ce8b2d6ba8b1b27e09","8bffce2e8a8e5c9e4ef5d3ebdae59650b10a63e452200e479b934d54967693fa","c1e2b19004c6013e18e96a1274c035ebf05f49e5820cd2e743ca2f8e772adea4","d37bb454991bbee2fc094dee20d08d66cdc70daca757bc4b87960fbd87d45bb4"],"reward":{"iv":"yRU+CSmd5mE0ymXC","ct":"GSf0VugzFw9F+ZiQLY8Q7bMo+0d+6Zy1D8yPLaFb2BR4K/Lkis/goof7KZK70G2YLRq1BzyDhkcBp1Bc50zxuMuuVETTEFrcs9j/XRvAniUdvf/Inw=="}};</script>
+<script>const PUZZLE = {"title":"The Housewarming Hunt","poem":["In the place where you started,","fifteen parks share a wall","Name them in order","And the next digit will fall"],"rows":3,"cols":5,"rowNames":["top","middle","bottom"],"drop":[0,0.5,0,0.5,0],"parks":[{"id":"arches","name":"Arches"},{"id":"bryce-canyon","name":"Bryce Canyon"},{"id":"canyonlands","name":"Canyonlands","short":"Canyon­lands"},{"id":"capitol-reef","name":"Capitol Reef"},{"id":"crater-lake","name":"Crater Lake"},{"id":"glacier","name":"Glacier"},{"id":"glacier-bay","name":"Glacier Bay"},{"id":"grand-canyon","name":"Grand Canyon"},{"id":"hawai-i-volcanoes","name":"Hawai‘i Volcanoes","short":"Hawai‘i Volca­noes"},{"id":"joshua-tree","name":"Joshua Tree"},{"id":"mount-rainier","name":"Mount Rainier"},{"id":"north-cascades","name":"North Cascades"},{"id":"olympic","name":"Olympic"},{"id":"redwood","name":"Redwood"},{"id":"sequoia","name":"Sequoia"},{"id":"yellowstone","name":"Yellowstone","short":"Yellow­stone"},{"id":"yosemite","name":"Yosemite"},{"id":"zion","name":"Zion"}],"iterations":5000,"salt":"eaROaRKCwFOzX/n6Xb4CuA==","frameHash":["1ccae0a04533ec4a43384eb3b9a15b5360a26d0b5e69371d39bca21aa5e5fb10","eea7d0503ecc4b305d62abb5e4caa749f5041380da1102ba7af4a2239c003994","84256014ec85983af3be12ef71710231ab9a0fefd78ebb7f4ac5731a20e6802b","69a5192afb9a1db0d667cb223c6b3d8f03ff7c585d0bfda50c9ed706a5b093d5","a48865ab7ed04212d66cfb256965344d39879432c589b579d61077dbbfeba90a","cf234c1b389cb72d28e5559bdec30222858364ec6226caaf34d7466048bb967a","82197e62800872088a28511103b42f83f9a7baa9f39ae0037dbe415b93705d47","d57be48c29265eb0bbd18a913493c6473cfba8387e622506100126fa08180016","2e09a1b9527b007bdb30762611e381f06804bd092558f565c2d36c25bae4f1a3","d750cfee3d905e65f981ee4d4adca83c2cd7194ed7f26f6da21808ed5ba5f79a","2c8f188103b4cf7963f5c0323ef6ab4820fe3e7db39a9b9b4625a5a8170e8c04","7ada8e7351663ef83e085f4a534f8eab04554b22b2c495b3e3ce320d81cd4143","6476aa274d97ac14ff8f0f5a4ac65b0c0e7b317239a9c9ef1c9ddc726dedd12f","5a1efb4a615acb9c983249b57d059e9a59fa7d57db1a2b95f578f790833c446b","54608bc5c70725c7464bec85c4d8adf080a54e676ef682041f6f6e5f348186e1"],"reward":{"iv":"aKIY73QtVhuGdxod","ct":"Oy4AyT2yEU7pKS4RwCmF80rpL5zScjvZICFwqIt+xN/r6bdqfd19bvpirsH+W16Bzy4SqspzLcGcrCd5hkH3gZRSo5cGuYiLz8E1Pe2hnw92/DtMkQ=="}};</script>
 <script>
 (() => {
   "use strict";
@@ -351,21 +341,13 @@ h1 {
       b.setAttribute("aria-label", cap(where(i)) + ": " + (id ? byId.get(id).name : "empty"));
       if (b.dataset.id === (id || "")) return;
       b.dataset.id = id || "";
-      if (!id) {
-        b.replaceChildren(el("span", "ghost"));
-      } else {
-        const p = byId.get(id);
-        const frame = el("span", "frame");
-        const mat = el("span", "mat");
-        mat.appendChild(el("span", "label", p.short || p.name));
-        frame.appendChild(mat);
-        b.replaceChildren(frame);
-      }
+      const frame = el("span", id ? "frame" : "frame empty");
+      const mat = el("span", "mat");
+      if (id) mat.appendChild(el("span", "label", byId.get(id).short || byId.get(id).name));
+      frame.appendChild(mat);
+      b.replaceChildren(frame);
     });
     const placed = place.filter(Boolean).length;
-    $("count").textContent = solved ? ""
-      : placed === 0 ? "Tap a frame to choose a park."
-      : placed + " of " + N + " placed.";
     $("check").disabled = busy || placed < N;
     $("check").hidden = !!solved;
     $("see-reward").hidden = !solved;
@@ -390,7 +372,7 @@ h1 {
     render();
     // Leave room to scroll the wall up above the sheet.
     document.body.style.paddingBottom = sheet.offsetHeight + 24 + "px";
-    if (!wasOpen) $("sheet-title").focus({ preventScroll: true });
+    if (!wasOpen) sheet.focus({ preventScroll: true });
     reveal(i);
   }
 
@@ -418,7 +400,6 @@ h1 {
   }
 
   function renderSheet() {
-    $("sheet-title").textContent = cap(where(target));
     const items = P.parks.map((p) => {
       const b = el("button", "park");
       b.type = "button";

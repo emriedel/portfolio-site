@@ -202,10 +202,22 @@ h1 {
 /* The reward: one more picture for the wall. */
 #reward { text-align: center; }
 #reward h1:focus { outline: none; }
-.prize { display: flex; justify-content: center; margin: 30px 0 28px; }
-.prize .slot { width: min(50vw, 220px); flex: none; cursor: default; }
-.prize .mat { background: var(--tile, var(--c-blue)); box-shadow: inset 0 2px 6px rgba(0, 0, 0, .35); }
-.prize .digit { font: 700 clamp(4.5rem, 28vw, 8.5rem)/1 var(--serif); color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, .18); }
+.prize { display: flex; justify-content: center; margin: 28px 0 30px; }
+.tile {
+  display: grid; place-items: center;
+  width: min(46vw, 200px);
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background: var(--tile, var(--c-blue));
+  box-shadow: 0 12px 24px -12px rgba(0, 0, 0, .6), inset 0 0 0 1px rgba(255, 255, 255, .12);
+}
+.tile .digit {
+  font: 700 clamp(4.5rem, 28vw, 8rem)/1 var(--serif);
+  font-variant-numeric: lining-nums;   /* Alegreya's default 7 drops below the line */
+  text-box: trim-both cap alphabetic;  /* center on the figure itself, not the line box */
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, .18);
+}
 #reward .poem { margin: 0 0 26px; }
 /* Slide only, no fade: if the animation never runs, the reward still shows. */
 .rise { animation: rise-in .5s ease-out; }
@@ -236,7 +248,7 @@ h1 {
 <section id="reward" hidden>
   <h1 id="r-title" tabindex="-1"></h1>
   <div class="prize" id="r-prize" role="img">
-    <div class="slot"><div class="frame"><div class="mat"><span class="digit" id="r-digit"></span></div></div></div>
+    <div class="tile"><span class="digit" id="r-digit"></span></div>
   </div>
   <p class="poem" id="r-lines" hidden></p>
   <button class="btn text" id="r-back" type="button">Back</button>
@@ -249,7 +261,7 @@ h1 {
   <div class="sheet-list" id="sheet-list"></div>
 </div>
 
-<script>const PUZZLE = {"title":"The Housewarming Hunt","poem":["In the place where you started,","fifteen parks share a wall","Name them in order","And the next digit will fall"],"rows":3,"cols":5,"rowNames":["top","middle","bottom"],"drop":[0,0.5,0,0.5,0],"parks":[{"id":"arches","name":"Arches"},{"id":"bryce-canyon","name":"Bryce Canyon"},{"id":"canyonlands","name":"Canyonlands","short":"Canyon­lands"},{"id":"capitol-reef","name":"Capitol Reef"},{"id":"crater-lake","name":"Crater Lake"},{"id":"glacier","name":"Glacier"},{"id":"glacier-bay","name":"Glacier Bay"},{"id":"grand-canyon","name":"Grand Canyon"},{"id":"hawai-i-volcanoes","name":"Hawai‘i Volcanoes","short":"Hawai‘i Volca­noes"},{"id":"joshua-tree","name":"Joshua Tree"},{"id":"mount-rainier","name":"Mount Rainier"},{"id":"north-cascades","name":"North Cascades"},{"id":"olympic","name":"Olympic"},{"id":"redwood","name":"Redwood"},{"id":"sequoia","name":"Sequoia"},{"id":"yellowstone","name":"Yellowstone","short":"Yellow­stone"},{"id":"yosemite","name":"Yosemite"},{"id":"zion","name":"Zion"}],"iterations":5000,"salt":"eaROaRKCwFOzX/n6Xb4CuA==","frameHash":["1ccae0a04533ec4a43384eb3b9a15b5360a26d0b5e69371d39bca21aa5e5fb10","eea7d0503ecc4b305d62abb5e4caa749f5041380da1102ba7af4a2239c003994","84256014ec85983af3be12ef71710231ab9a0fefd78ebb7f4ac5731a20e6802b","69a5192afb9a1db0d667cb223c6b3d8f03ff7c585d0bfda50c9ed706a5b093d5","a48865ab7ed04212d66cfb256965344d39879432c589b579d61077dbbfeba90a","cf234c1b389cb72d28e5559bdec30222858364ec6226caaf34d7466048bb967a","82197e62800872088a28511103b42f83f9a7baa9f39ae0037dbe415b93705d47","d57be48c29265eb0bbd18a913493c6473cfba8387e622506100126fa08180016","2e09a1b9527b007bdb30762611e381f06804bd092558f565c2d36c25bae4f1a3","d750cfee3d905e65f981ee4d4adca83c2cd7194ed7f26f6da21808ed5ba5f79a","2c8f188103b4cf7963f5c0323ef6ab4820fe3e7db39a9b9b4625a5a8170e8c04","7ada8e7351663ef83e085f4a534f8eab04554b22b2c495b3e3ce320d81cd4143","6476aa274d97ac14ff8f0f5a4ac65b0c0e7b317239a9c9ef1c9ddc726dedd12f","5a1efb4a615acb9c983249b57d059e9a59fa7d57db1a2b95f578f790833c446b","54608bc5c70725c7464bec85c4d8adf080a54e676ef682041f6f6e5f348186e1"],"reward":{"iv":"aKIY73QtVhuGdxod","ct":"Oy4AyT2yEU7pKS4RwCmF80rpL5zScjvZICFwqIt+xN/r6bdqfd19bvpirsH+W16Bzy4SqspzLcGcrCd5hkH3gZRSo5cGuYiLz8E1Pe2hnw92/DtMkQ=="}};</script>
+<script>const PUZZLE = {"title":"The Housewarming Hunt","poem":["In the place where you started,","fifteen parks share a wall","Name them in order","And the next digit will fall"],"rows":3,"cols":5,"rowNames":["top","middle","bottom"],"drop":[0,0.5,0,0.5,0],"parks":[{"id":"arches","name":"Arches"},{"id":"bryce-canyon","name":"Bryce Canyon"},{"id":"canyonlands","name":"Canyonlands","short":"Canyon­lands"},{"id":"capitol-reef","name":"Capitol Reef"},{"id":"crater-lake","name":"Crater Lake"},{"id":"death-valley","name":"Death Valley"},{"id":"glacier","name":"Glacier"},{"id":"glacier-bay","name":"Glacier Bay"},{"id":"grand-canyon","name":"Grand Canyon"},{"id":"hawai-i-volcanoes","name":"Hawai‘i Volcanoes","short":"Hawai‘i Volca­noes"},{"id":"joshua-tree","name":"Joshua Tree"},{"id":"lassen-volcanic","name":"Lassen Volcanic"},{"id":"mount-rainier","name":"Mount Rainier"},{"id":"north-cascades","name":"North Cascades"},{"id":"olympic","name":"Olympic"},{"id":"redwood","name":"Redwood"},{"id":"sequoia","name":"Sequoia"},{"id":"yellowstone","name":"Yellowstone","short":"Yellow­stone"},{"id":"yosemite","name":"Yosemite"},{"id":"zion","name":"Zion"}],"iterations":5000,"salt":"RZJiTVnD7Lf8Zo8aj08s7w==","frameHash":["986625ee4b56ff66258bff0af5b528333d6ad4537110069ba77003dc2892e7a4","2ac7276bda9f0321abc4d884794291ff453d6077aa16f737c295a47d0b915908","6d4f7e5adefd48c84a09edbd0e8395b76bec43cb1c881d240afeb06fa94c9742","f1880f9d711a85d5ab60ec000b5d8dc518f3ce03c9556e517f29b8ec474fec3f","3ee8712b29523ea7b08011b47881cf3fbdc0ba72a95150a9e1d358d8b04102c7","f0f8b8baf966184ea618029a37fed7c95ef092426b844b3dab98694b5fd5be8f","617241ae8b32b7b16887922c4ccc41ccc16417f0f3cb7f49b9a670b1826381b7","545bb14825dc565d4211df34c60aa73a6f2308ab41420374b75cb7b510f47cff","39bea338a2c4b0ba67802f427ec31c96f1aff7eb8f9f77fed79d7d083560a72b","c6123a0ecb614a8e73cc26349d9f55182699a4021eb29ac9bf133cd837b666f8","2eb29b8a2bd72e08d4fc1419737f451630a94a979b636ad3f9a7cf45f86420f1","76be6b1b3b5aa97ef359db5f4ac759433dabb71a868cd2c8d8ac26deddace9cb","099777a78bedd852c42d1ab0ca7dc3c58fefbbd99a99e23fb60578723d5dfd19","69ac259f51bb976a95336ef28db7cc0bb2ba300c2b3c6f0328669e2bae7cb2e1","543dfd19de95611c72578a97fe84614e665d1697a04b669dd3be8d1430d17be5"],"reward":{"iv":"HCZ3R3P/jieHA45t","ct":"zl8hipwbQUgFNyTGrzcQVa2y5HVUqQVQCZAUQ//BxzP5zfqyGAWWw9s91AV/xktQiLWolEIpvL0QNdd25esGJkOCvphrpuTo2OFRA8YAJivwihuYM3kOvoi6AMSA/lroeo2MjrdPhfmG2gjL/wQQLg6PQLBAqKTyBWsn1b+XLUFpFezZUm5mTrlWSkSe7Y7/mQxoqu0vmzj/kbpySxQWcYJcS0uiaoJockZLVoUWSZDJq6mT47z85RdCjlvXx3x3rBU9M6WWRVOPDJoq1oQ8d4r9Ao17biqy99JHC6bdICNwLXHTHNbhx5dpWEZ8qv7CEA3rYg+LO5qHX1kChjVHm2RYM4DmZT/+j6oHgvGXL/XOb95/P9OGO/CPsKbDmD6Ghhcu+abxkM/w/zqgUkUqFTotef7lxYkNBIan2iGRUYcgvDDadzMQBCxTrNQY/SMpFHPeafksb83hvLNBybRTzwq/ZZyll4DE6w=="}};</script>
 <script>
 (() => {
   "use strict";
@@ -274,6 +286,8 @@ h1 {
 
   const rowOf = (i) => Math.floor(i / P.cols);
   const where = (i) => P.rowNames[rowOf(i)] + " row, frame " + (i % P.cols + 1);
+  // Poem lines; an empty line is a gap between stanzas.
+  const verse = (lines) => lines.map((t) => el("span", null, t || "\u00a0"));
   const el = (tag, cls, text) => {
     const e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -503,7 +517,7 @@ h1 {
     }
     // Optional text under the picture (reward.lines in the config).
     $("r-lines").hidden = !(R.lines && R.lines.length);
-    $("r-lines").replaceChildren(...(R.lines || []).map((t) => el("span", null, t)));
+    $("r-lines").replaceChildren(...verse(R.lines || []));
     $("puzzle").hidden = true;
     const view = $("reward");
     view.hidden = false;
@@ -514,7 +528,7 @@ h1 {
 
   // ---- Wiring ----
   document.title = P.title;
-  $("poem").replaceChildren(...P.poem.map((t) => el("span", null, t)));
+  $("poem").replaceChildren(...verse(P.poem));
   $("check").addEventListener("click", submit);
   $("sheet-done").addEventListener("click", closeSheet);
   $("see-reward").addEventListener("click", () => showReward(false));
